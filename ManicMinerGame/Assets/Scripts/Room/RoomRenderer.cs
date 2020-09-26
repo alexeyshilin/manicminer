@@ -22,6 +22,9 @@ public class RoomRenderer : MonoBehaviour
 
     public Sprite roomKeyTemp;
 
+    // HACK: this does not belog here
+    public CharScreen charScreen;
+
     IEnumerator Start()
     {
         store = GetComponent<RoomStore>();
@@ -40,6 +43,8 @@ public class RoomRenderer : MonoBehaviour
                 int attr = data.Attributes[y,x];
                 if(attr != 0)
                 {
+                    if(!data.Blocks.ContainsKey(attr)) continue; // hack for room #19
+
                     Sprite block = data.Blocks[attr];
 
                     /*
@@ -83,6 +88,11 @@ public class RoomRenderer : MonoBehaviour
         {
             AddSprite("Key", key.Position.ToVector3(), roomKeyTemp);
         }
+
+
+        // HACK: this does not belong here
+        charScreen.PrintAt(data.RoomName, 0, 16);
+        charScreen.ApplyText();
     }
 
     protected void AddSprite(string name, Vector3 pos, Sprite sprite)

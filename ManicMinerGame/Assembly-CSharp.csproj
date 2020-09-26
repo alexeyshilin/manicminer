@@ -73,6 +73,8 @@
     <Compile Include="Assets\Scripts\Room\RoomKey.cs" />
     <Compile Include="Assets\Scripts\Room\RoomRenderer.cs" />
     <Compile Include="Assets\Scripts\Room\RoomStore.cs" />
+    <Compile Include="Assets\Scripts\ZXSpectrum\CharScreen.cs" />
+    <Compile Include="Assets\Scripts\ZXSpectrum\TextScreenRefresher.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

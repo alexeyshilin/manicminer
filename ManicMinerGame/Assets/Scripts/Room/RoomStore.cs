@@ -67,7 +67,8 @@ public class RoomStore : MonoBehaviour
         {
             byte attr = importer.Read();
 
-            SpriteTexture tex = new SpriteTexture(8, 8, Vector2.zero);
+            //SpriteTexture tex = new SpriteTexture(8, 8, Vector2.zero);
+            SpriteTexture tex = new SpriteTexture(8, 8, new Vector2(0,1));
             tex.Clear(new Color(0,0,0,0));
             for(int y=0; y<8; y++)
             {
