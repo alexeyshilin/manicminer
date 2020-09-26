@@ -11,6 +11,9 @@ obj/*
 #But not source file with postfix. which is everything but a folder
 !*.*.meta
 
+# ignore all .log files
+*.log
+
 ####################################################################################################
 
 ###
