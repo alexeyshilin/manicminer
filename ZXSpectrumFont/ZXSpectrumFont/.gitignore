@@ -1,0 +1,19 @@
+
+.git/
+.git/*
+.vs/
+.vs/*
+obj/
+obj/*
+
+#Ignore all .meta file
+*.meta
+#But not source file with postfix. which is everything but a folder
+!*.*.meta
+
+# ignore all .log files
+*.log
+
+bin/Debug/
+bin/Debug/*
+
