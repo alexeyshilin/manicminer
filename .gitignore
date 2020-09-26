@@ -1,0 +1,6 @@
+.git/
+.git/*
+.vs/
+.vs/*
+obj/
+obj/*
