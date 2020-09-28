@@ -108,11 +108,16 @@ public class RoomStore : MonoBehaviour
         importer.Read(); // border color
 
         // positions of the items (keys)
+        bool addKey = true;
         for(int j=0; j<5; j++)
         {
+            addKey = true; // reset value (set default)
+
             byte attr = importer.Read();
-            if (attr == 255) break;
-            if (attr == 0) continue;
+            //if (attr == 255) continue;
+            //if (attr == 0) continue;
+            //if (attr == 255) addKey = false;
+            //if (attr == 0) addKey = false;
 
             byte secondGfxBuf = importer.Read();
             short keyPosRaw = importer.ReadShort();
@@ -120,8 +125,22 @@ public class RoomStore : MonoBehaviour
 
             importer.Read(); // dummy byte
 
-            data.RoomKeys.Add( new RoomKey(attr, keyPos));
+            if(addKey)
+                data.RoomKeys.Add( new RoomKey(attr, keyPos));
         }
+
+        importer.Read(); // dummy
+        importer.Read(); // dummy always =255
+
+        // PORTAL
+        byte portalColour = importer.Read(); // 655
+        byte[] portalShape = importer.ReadBytes(32); // 656-687 (=687-656+1)
+        short portalPositionRaw = importer.ReadShort(); // 688-691
+        importer.ReadShort(); // skip short
+        data.AddPortal(portalColour, portalShape, portalPositionRaw.GetX(), portalPositionRaw.GetY());
+        // /PORTAL
+
+        data.KeyShape = importer.ReadBytes(8); // ITEMS (keys) shape
 
         _rooms.Add(data);
     }

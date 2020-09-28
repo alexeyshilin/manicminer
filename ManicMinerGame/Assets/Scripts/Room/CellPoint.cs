@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 public struct CellPoint
 {
-    public int x;
-    public int y;
+    public int X;
+    public int Y;
 
     public CellPoint(int _x, int _y)
     {
-        x = _x;
-        y = _y;
+        X = _x;
+        Y = _y;
     }
 }

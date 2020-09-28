@@ -100,19 +100,19 @@ namespace Com.SloanKelly.ZXSpectrum
 			_pixels.Set (x, y, row, val);
 		}
 
-		/// <summary>
-		/// Fill the attributes at a given position.
-		/// </summary>
-		/// <returns>The attribute.</returns>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <param name="width">Width.</param>
-		/// <param name="height">Height.</param>
-		/// <param name="ink">Ink.</param>
-		/// <param name="paper">Paper.</param>
-		/// <param name="bright">If set to <c>true</c> bright.</param>
-		/// <param name="flashing">If set to <c>true</c> flashing.</param>
-		public ISpectrumScreen FillAttribute(int x, int y, int width, int height, int ink, int paper, bool bright = false, bool flashing = false)
+        /// <summary>
+        /// Fill the attributes at a given position.
+        /// </summary>
+        /// <returns>The attribute.</returns>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="width">Width.</param>
+        /// <param name="height">Height.</param>
+        /// <param name="ink">Ink.</param>
+        /// <param name="paper">Paper.</param>
+        /// <param name="bright">If set to <c>true</c> bright.</param>
+        /// <param name="flashing">If set to <c>true</c> flashing.</param>
+        public void FillAttribute(int x, int y, int width, int height, int ink, int paper, bool bright = false, bool flashing = false)
 		{
 			for (int i = x; i < x + width; i++)
 			{
@@ -121,48 +121,42 @@ namespace Com.SloanKelly.ZXSpectrum
 					SetAttributeX (i, j, ink, paper, bright, flashing);
 				}
 			}
-
-			return this;
 		}
 
 		/// <summary>
 		/// Set the overwrite draw mode on.
 		/// </summary>
 		/// <returns>The draw.</returns>
-		public ISpectrumScreen OverwriteDraw()
+		public void OverwriteDraw()
 		{
 			_drawMode = DrawMode.Overwrite;
-			return this;
 		}
 
 		/// <summary>
 		/// Set the Or draw mode on.
 		/// </summary>
 		/// <returns>The draw.</returns>
-		public ISpectrumScreen OrDraw()
+		public void OrDraw()
 		{
 			_drawMode = DrawMode.Or;
-			return this;
 		}
 
 		/// <summary>
 		/// Set the sprite draw to column order.
 		/// </summary>
 		/// <returns>The order sprite.</returns>
-		public ISpectrumScreen ColumnOrderSprite()
+		public void ColumnOrderSprite()
 		{
 			_spriteFormat = SpriteFormat.ColumnOrder;
-			return this;
 		}
 
 		/// <summary>
 		/// Set the sprite draw to row order.
 		/// </summary>
 		/// <returns>The order sprite.</returns>
-		public ISpectrumScreen RowOrderSprite()
+		public void RowOrderSprite()
 		{
 			_spriteFormat = SpriteFormat.RowOrder;
-			return this;
 		}
 
 		/// <summary>
@@ -174,8 +168,9 @@ namespace Com.SloanKelly.ZXSpectrum
 		/// <param name="cols">Cols.</param>
 		/// <param name="rows">Rows.</param>
 		/// <param name="data">Data.</param>
-		public ISpectrumScreen DrawSprite(int x, int y, int cols, int rows, params byte[] data)
+		public void DrawSprite(int x, int y, int cols, int rows, params byte[] data)
 		{
+            /*
 			int offset = 0;
 
 			int most = _spriteFormat == SpriteFormat.ColumnOrder ? x : y;
@@ -194,7 +189,8 @@ namespace Com.SloanKelly.ZXSpectrum
 						offset %= data.Length;
 					}
 			//} 
-			/*else if (_spriteFormat == SpriteFormat.RowOrder) 
+            */
+            /*else if (_spriteFormat == SpriteFormat.RowOrder) 
 			{
 				for (int j = y; j < y + rows; j++)
 					for (int i = x; i < x + cols; i++)
@@ -208,19 +204,66 @@ namespace Com.SloanKelly.ZXSpectrum
 					}
 			}*/
 
-			return this;
-		}
-			
-		/// <summary>
-		/// Sets the attribute.
-		/// </summary>
-		/// <returns>The attribute.</returns>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <param name="index">Index.</param>
-		/// <param name="bright">If set to <c>true</c> bright.</param>
-		/// <param name="flashing">If set to <c>true</c> flashing.</param>
-		public ISpectrumScreen SetAttribute(int x, int y, int ink, int paper, bool bright = false, bool flashing = false)
+            if (_spriteFormat == SpriteFormat.ColumnOrder)
+            {
+                DrawColumnOrderSprite(x, y, cols, rows, data);
+            }
+            else
+            {
+                DrawRowOrderSprite(x, y, cols, rows, data);
+            }
+
+        }
+
+        private void DrawColumnOrderSprite(int x, int y, int cols, int rows, byte[] data)
+        {
+            int offset = 0;
+
+            int most = _spriteFormat == SpriteFormat.ColumnOrder ? x : y;
+            int least = _spriteFormat == SpriteFormat.ColumnOrder ? y : x;
+
+            for (int i = most; i < most + cols; i++)
+            {
+                for (int j = least; j < least + rows; j++)
+                {
+                    for (int r = 0; r < 8; r++)
+                    {
+                        Poke(i, j, r, data[r + offset]);
+                    }
+
+                    offset += 8;
+                    offset %= data.Length;
+                }
+            }
+        }
+
+        private void DrawRowOrderSprite(int x, int y, int cols, int rows, byte[] data)
+        {
+            int index = 0;
+
+            for (int yy = y; yy < y+rows; yy++)
+            {
+                for(int row=0; row<8; row++)
+                {
+                    for (int xx = x; xx < x + cols; xx++)
+                    {
+                        Poke(xx, yy, row, data[index]);
+                        index++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the attribute.
+        /// </summary>
+        /// <returns>The attribute.</returns>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="index">Index.</param>
+        /// <param name="bright">If set to <c>true</c> bright.</param>
+        /// <param name="flashing">If set to <c>true</c> flashing.</param>
+        public void SetAttribute(int x, int y, int ink, int paper, bool bright = false, bool flashing = false)
 		{
 			if (x < 0 || x >= 32)
 				throw new IndexOutOfRangeException ("X value out of range");
@@ -229,14 +272,19 @@ namespace Com.SloanKelly.ZXSpectrum
 				throw new IndexOutOfRangeException ("Y value out of range");
 
 			SetAttributeX (x, y, ink, paper, bright, flashing);
-
-			return this;
 		}
 
-		/// <summary>
-		/// Initialized the texture.
-		/// </summary>
-		void Awake () 
+        public void SetAttribute(int x, int y, ZXAttribute attr)
+        {
+            //throw new NotImplementedException();
+
+            SetAttribute(x, y, attr.Ink, attr.Paper, attr.Bright, attr.Flashing);
+        }
+
+        /// <summary>
+        /// Initialized the texture.
+        /// </summary>
+        void Awake () 
 		{
 			// Create the texture
 			_tex = new Texture2D (256, 192, TextureFormat.RGBA32, false, false);
@@ -280,12 +328,22 @@ namespace Com.SloanKelly.ZXSpectrum
 					// Determine the origin of the attributes, they are always at the top. Origin only
 					// affects the drawing of pixels.
 					int attrY = /* _origin == Origin.Top ? */ (191 - y) / 8 /* : y / 8 */ ;
-						
-					// Get the attriute at this position
-					ZXAttribute attr = _attrs [x / 8, attrY];
 
-					// Determing if the attribute block is flashing
-					bool flashing = attr.Flashing && inverse;
+                    // Get the attriute at this position
+                    ZXAttribute attr = _attrs [x / 8, attrY];
+                    /*
+                    ZXAttribute attr = null;
+                    try
+                    {
+                        attr = _attrs[x / 8, attrY];
+                    }catch(Exception ex)
+                    {
+                        throw ex;
+                    }
+                    */
+
+                    // Determing if the attribute block is flashing
+                    bool flashing = attr.Flashing && inverse;
 
 					// Set the colours for ink and paper
 					Color paper = ZXColour.Get (flashing ? attr.Ink : attr.Paper, attr.Bright);

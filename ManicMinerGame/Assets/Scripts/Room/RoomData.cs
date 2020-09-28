@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +20,10 @@ public class RoomData
 
     public CellPoint StartPoint { get; set; }
 
+    public Portal Portal {get; set;}
+
+    public byte[] KeyShape { get; set; }
+
     public RoomData()
     {
         //_attrs = new int[16, 32];
@@ -35,5 +40,12 @@ public class RoomData
         //_attrs[15-y, x] = attr;
         //_attrs[y, x] = attr;
         _attrs[y * 32 + x] = attr;
+    }
+
+    public void AddPortal(byte colour, byte[] shape, int x, int y)
+    {
+        //throw new NotImplementedException();
+
+        Portal = new Portal(colour, shape, x, y);
     }
 }

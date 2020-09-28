@@ -7,11 +7,33 @@ namespace Com.SloanKelly.ZXSpectrum
 	/// </summary>
 	public class ZXAttribute
 	{
-		/// <summary>
-		/// Ink colour.
-		/// </summary>
-		/// <value>The ink.</value>
-		public int Ink { get; set; }
+        #region static methods
+        public static int GetInk(byte raw)
+        {
+            return raw & 0x07; // 0x07 == 111
+        }
+
+        public static int GetPaper(byte raw)
+        {
+            return (raw >> 3) & 0x07;
+        }
+
+        public static bool GetFlashing(byte raw)
+        {
+            return (raw & 0x80) == 0x80; // 0x80 == 1000 0000
+        }
+
+        public static bool GetBright(byte raw)
+        {
+            return ((raw << 1) & 0x80) == 0x80; //
+        }
+        #endregion
+
+        /// <summary>
+        /// Ink colour.
+        /// </summary>
+        /// <value>The ink.</value>
+        public int Ink { get; set; }
 
 		/// <summary>
 		/// Paper colour.
@@ -57,6 +79,23 @@ namespace Com.SloanKelly.ZXSpectrum
 			Bright = bright;
 			Flashing = flashing;
 		}
-	}
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// /// <param name="raw">raw ZX Spectrum formatted attribute</param>
+        public ZXAttribute(byte raw)
+        {
+            //Ink = raw & 0x07; // 0x07 == 111
+            //Paper = (raw >> 3) & 0x07;
+            //Flashing = (raw & 0x80) == 0x80; // 0x80 == 1000 0000
+            //Bright = ((raw << 1) & 0x80) == 0x80; //
+
+            Ink = GetInk(raw); // 0x07 == 111
+            Paper = GetPaper(raw);
+            Flashing = GetFlashing(raw); // 0x80 == 1000 0000
+            Bright = GetBright(raw); //
+        }
+    }
 }
 	

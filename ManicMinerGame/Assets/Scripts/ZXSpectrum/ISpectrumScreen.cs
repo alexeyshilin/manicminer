@@ -8,19 +8,19 @@ namespace Com.SloanKelly.ZXSpectrum
 	/// </summary>
 	public interface ISpectrumScreen
 	{
-		ISpectrumScreen FillAttribute (int x, int y, int width, int height, int ink, int paper, bool bright = false, bool flashing = false);
+		void FillAttribute (int x, int y, int width, int height, int ink, int paper, bool bright = false, bool flashing = false);
 
-		ISpectrumScreen OverwriteDraw ();
+        void OverwriteDraw ();
 
-		ISpectrumScreen OrDraw();
+        void OrDraw();
 
-		ISpectrumScreen ColumnOrderSprite();
+        void ColumnOrderSprite();
 
-		ISpectrumScreen RowOrderSprite();
+        void RowOrderSprite();
 
-		ISpectrumScreen DrawSprite(int x, int y, int cols, int rows, params byte[] data);
+        void DrawSprite(int x, int y, int cols, int rows, params byte[] data);
 
-		ISpectrumScreen SetAttribute (int x, int y, int ink, int paper, bool bright = false, bool flashing = false);
+        void SetAttribute (int x, int y, int ink, int paper, bool bright = false, bool flashing = false);
 	}
 }
 

@@ -83,6 +83,35 @@ public class RoomRenderer : MonoBehaviour
             }
         }
 
+        data.Portal.Attr.Flashing = true; // Flashing!!!
+
+        //screen.SetAttribute(data.Portal.X, data.Portal.Y, data.Portal.Attr);
+        //screen.DrawSprite(data.Portal.X, data.Portal.Y, 2, 2, data.Portal.Shape);
+
+        for (int py=0; py<2; py++)
+        {
+            for(int px=0; px<2; px++)
+            {
+                screen.SetAttribute(data.Portal.X+px, data.Portal.Y+py, data.Portal.Attr);
+            }
+        }
+
+        // KEYS
+        byte[] keyShape = new byte[] { 255, 255, 255, 255, 255, 255, 255, 255 };
+        foreach (var key in data.RoomKeys)
+        {
+            screen.SetAttribute(key.Position.X, key.Position.Y, 2, 0, true, false);
+            //screen.DrawSprite(key.Position.X, key.Position.Y, 1, 1, keyShape);
+            screen.DrawSprite(key.Position.X, key.Position.Y, 1, 1, data.KeyShape);
+        }
+        // /KEYS
+
+        screen.RowOrderSprite();
+        screen.DrawSprite(data.Portal.X, data.Portal.Y, 2, 2, data.Portal.Shape);
+
+        screen.ColumnOrderSprite();
+
+
         /*
         GameObject start = new GameObject("Miner Willy Start");
         var ss = start.AddComponent<SpriteRenderer>();
@@ -111,6 +140,7 @@ public class RoomRenderer : MonoBehaviour
         charScreen.PrintAt(data.RoomName, 0, 16);
         charScreen.ApplyText();
         */
+
     }
 
     /*

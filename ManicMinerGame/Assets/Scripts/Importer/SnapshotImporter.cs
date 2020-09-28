@@ -56,6 +56,11 @@ public class SnapshotImporter : IDisposable
     {
         return _reader.ReadInt16();
     }
+
+    public int ReadInt()
+    {
+        return _reader.ReadInt32();
+    }
     internal void Seek(int offset)
     {
         offset = offset - 16384;
