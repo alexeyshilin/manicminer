@@ -56,7 +56,8 @@ public class RoomStore : MonoBehaviour
         {
             for (int x = 0; x < 32; x++)
             {
-                data.SetAttr(x, y, buf[i]);
+                //data.SetAttr(x, y, buf[i]);
+                data.Attributes[i] = buf[i];
                 i++;
             }
         }
@@ -67,15 +68,18 @@ public class RoomStore : MonoBehaviour
         {
             byte attr = importer.Read();
 
-            //SpriteTexture tex = new SpriteTexture(8, 8, Vector2.zero);
-            SpriteTexture tex = new SpriteTexture(8, 8, new Vector2(0,1));
-            tex.Clear(new Color(0,0,0,0));
-            for(int y=0; y<8; y++)
-            {
-                tex.SetLine(y, importer.Read());
-            }
+            ////SpriteTexture tex = new SpriteTexture(8, 8, Vector2.zero);
+            //SpriteTexture tex = new SpriteTexture(8, 8, new Vector2(0,1));
+            //tex.Clear(new Color(0,0,0,0));
+            //for(int y=0; y<8; y++)
+            //{
+            //    tex.SetLine(y, importer.Read());
+            //}
 
-            data.Blocks[attr] = tex.Apply();
+            //data.Blocks[attr] = tex.Apply();
+
+            byte[] blockData = importer.ReadBytes(8);
+            data.Blocks[attr] = blockData;
 
             // for debug only
             /*

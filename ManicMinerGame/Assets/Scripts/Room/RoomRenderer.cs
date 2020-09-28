@@ -11,6 +11,8 @@ public class RoomRenderer : MonoBehaviour
 {
     RoomStore store;
 
+    Com.SloanKelly.ZXSpectrum.SpectrumScreen screen;
+
     public int roomId; // 0-19
 
     public Transform target;
@@ -23,7 +25,7 @@ public class RoomRenderer : MonoBehaviour
     public Sprite roomKeyTemp;
 
     // HACK: this does not belog here
-    public CharScreen charScreen;
+    //public CharScreen charScreen;
 
     IEnumerator Start()
     {
@@ -34,18 +36,24 @@ public class RoomRenderer : MonoBehaviour
             yield return null;
         }
 
+        screen = GetComponent<Com.SloanKelly.ZXSpectrum.SpectrumScreen>();
+        var sr = target.GetComponent<SpriteRenderer>();
+        sr.sprite = Sprite.Create(screen.Texture, new Rect(0, 0, 256, 192), new Vector2(0, 1), 1f);
+
         RoomData data = store.Rooms[roomId];
 
         for(int y=0; y<16; y++)
         {
             for(int x=0; x<32; x++)
             {
-                int attr = data.Attributes[y,x];
-                if(attr != 0)
+                //int attr = data.Attributes[y,x];
+                int attr = data.Attributes[y*32 + x];
+
+                if (attr != 0)
                 {
                     if(!data.Blocks.ContainsKey(attr)) continue; // hack for room #19
 
-                    Sprite block = data.Blocks[attr];
+                    //Sprite block = data.Blocks[attr];
 
                     /*
                     GameObject go = new GameObject(string.Format("({0}, {1})", x, y));
@@ -62,7 +70,15 @@ public class RoomRenderer : MonoBehaviour
                     go.transform.localPosition = new Vector3(x * 8, y * -8, 0);
                     */
 
-                    AddSprite(string.Format("({0}, {1})", x, y), new Vector3(x, y), block);
+                    // AddSprite(string.Format("({0}, {1})", x, y), new Vector3(x, y), block);
+
+                    int ink = attr.GetInk();
+                    int paper = attr.GetPaper();
+                    bool bright = attr.IsBright();
+                    bool flashing = attr.IsFlashing();
+
+                    screen.SetAttribute(x ,y, ink, paper, bright, flashing);
+                    screen.DrawSprite(x,y, 1,1, data.Blocks[attr]);
                 }
             }
         }
@@ -80,6 +96,7 @@ public class RoomRenderer : MonoBehaviour
         start.transform.localPosition = new Vector3(pt.x * 8, pt.y * -8);
         */
 
+        /*
         CellPoint pt = data.StartPoint;
         //AddSprite("Miner Willy Start", new Vector3(pt.x, pt.y), minerStartTemp);
         AddSprite("Miner Willy Start", pt.ToVector3(), minerStartTemp);
@@ -93,8 +110,10 @@ public class RoomRenderer : MonoBehaviour
         // HACK: this does not belong here
         charScreen.PrintAt(data.RoomName, 0, 16);
         charScreen.ApplyText();
+        */
     }
 
+    /*
     protected void AddSprite(string name, Vector3 pos, Sprite sprite)
     {
         GameObject go = new GameObject(name);
@@ -104,4 +123,5 @@ public class RoomRenderer : MonoBehaviour
         go.transform.SetParent(target);
         go.transform.localPosition = new Vector3(pos.x * 8, pos.y * -8);
     }
+    */
 }

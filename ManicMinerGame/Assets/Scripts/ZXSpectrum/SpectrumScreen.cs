@@ -1,0 +1,347 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Com.SloanKelly.ZXSpectrum
+{
+	/// <summary>
+	/// Spectrum screen. This class uses https://en.wikipedia.org/wiki/Fluent_interface.
+	/// </summary>
+	public class SpectrumScreen : MonoBehaviour, ISpectrumScreen
+	{
+		// True if flashing squares are to invert their ink/paper colours
+		bool inverse = false;
+
+		// Flashing timer
+		float inverseTime = 0f;
+
+		// Origin of the screen, top left or bottom left. For pixel drawing only. Attributes origin is always top left.
+		enum Origin
+		{
+			Top,
+			Bottom
+		}
+
+		/// <summary>
+		/// The draw mode for the screen.
+		/// </summary>
+		enum DrawMode
+		{
+			/// <summary>
+			/// Overwrite the pixels that are in that position.
+			/// </summary>
+			Overwrite,
+
+			/// <summary>
+			/// Or the new pixels with the ones already there.
+			/// </summary>
+			Or
+		}
+
+		/// <summary>
+		/// Sprite data format.
+		/// </summary>
+		enum SpriteFormat
+		{
+			/// <summary>
+			/// Rows are described first.
+			/// </summary>
+			RowOrder,
+
+			/// <summary>
+			/// Columns are described first.
+			/// </summary>
+			ColumnOrder
+		}
+
+		// The origin of the screen, for pixel drawing only.
+		Origin _origin = Origin.Top;
+
+		// The Spectrum "Screen".
+		Texture2D _tex;
+
+		// The attributes.
+		ZXAttribute[,] _attrs;
+
+		// Individual pixels that make up the image.
+		bool[,] _pixels;
+
+		// The draw mode.
+		DrawMode _drawMode = DrawMode.Overwrite;
+
+		// The draw order for the sprites
+		SpriteFormat _spriteFormat = SpriteFormat.ColumnOrder;
+
+		/// <summary>
+		/// The Spectrum screen represented as a Texture that can be attached to a sprite. I recommend using a 1-unit-per-pixel size and an
+		/// orthogonal camera size 96; this matches the height of the 192-unit height screen.
+		/// </summary>
+		/// <value>The texture.</value>
+		public Texture2D Texture { get { return _tex; } }
+
+		/// <summary>
+		/// Poke the specified byte at x, y, and row.
+		/// </summary>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <param name="row">Row.</param>
+		/// <param name="val">Value.</param>
+		public void Poke(int x, int y, int row, byte val)
+		{
+			if (_origin == Origin.Top) 
+			{
+				y = 23 - y;
+			}
+
+			x *= 8;
+			y *= 8;
+
+			_pixels.Set (x, y, row, val);
+		}
+
+		/// <summary>
+		/// Fill the attributes at a given position.
+		/// </summary>
+		/// <returns>The attribute.</returns>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <param name="width">Width.</param>
+		/// <param name="height">Height.</param>
+		/// <param name="ink">Ink.</param>
+		/// <param name="paper">Paper.</param>
+		/// <param name="bright">If set to <c>true</c> bright.</param>
+		/// <param name="flashing">If set to <c>true</c> flashing.</param>
+		public ISpectrumScreen FillAttribute(int x, int y, int width, int height, int ink, int paper, bool bright = false, bool flashing = false)
+		{
+			for (int i = x; i < x + width; i++)
+			{
+				for (int j = y; j < y + height; j++)
+				{
+					SetAttributeX (i, j, ink, paper, bright, flashing);
+				}
+			}
+
+			return this;
+		}
+
+		/// <summary>
+		/// Set the overwrite draw mode on.
+		/// </summary>
+		/// <returns>The draw.</returns>
+		public ISpectrumScreen OverwriteDraw()
+		{
+			_drawMode = DrawMode.Overwrite;
+			return this;
+		}
+
+		/// <summary>
+		/// Set the Or draw mode on.
+		/// </summary>
+		/// <returns>The draw.</returns>
+		public ISpectrumScreen OrDraw()
+		{
+			_drawMode = DrawMode.Or;
+			return this;
+		}
+
+		/// <summary>
+		/// Set the sprite draw to column order.
+		/// </summary>
+		/// <returns>The order sprite.</returns>
+		public ISpectrumScreen ColumnOrderSprite()
+		{
+			_spriteFormat = SpriteFormat.ColumnOrder;
+			return this;
+		}
+
+		/// <summary>
+		/// Set the sprite draw to row order.
+		/// </summary>
+		/// <returns>The order sprite.</returns>
+		public ISpectrumScreen RowOrderSprite()
+		{
+			_spriteFormat = SpriteFormat.RowOrder;
+			return this;
+		}
+
+		/// <summary>
+		/// Draw a sprite at the given position.
+		/// </summary>
+		/// <returns>The sprite.</returns>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <param name="cols">Cols.</param>
+		/// <param name="rows">Rows.</param>
+		/// <param name="data">Data.</param>
+		public ISpectrumScreen DrawSprite(int x, int y, int cols, int rows, params byte[] data)
+		{
+			int offset = 0;
+
+			int most = _spriteFormat == SpriteFormat.ColumnOrder ? x : y;
+			int least = _spriteFormat == SpriteFormat.ColumnOrder ? y : x;
+
+			//if (_spriteFormat == SpriteFormat.ColumnOrder) 
+			//{
+				for (int i = most; i < most + cols; i++)
+					for (int j = least; j < least + rows; j++) 
+					{
+						for (int r = 0; r < 8; r++) {
+							Poke (i, j, r, data [r + offset]);
+						}
+
+						offset += 8;
+						offset %= data.Length;
+					}
+			//} 
+			/*else if (_spriteFormat == SpriteFormat.RowOrder) 
+			{
+				for (int j = y; j < y + rows; j++)
+					for (int i = x; i < x + cols; i++)
+					{
+						for (int r = 0; r < 8; r++) {
+							Poke (i, j, r, data [r + offset]);
+						}
+
+						offset += 8;
+						offset %= data.Length;
+					}
+			}*/
+
+			return this;
+		}
+			
+		/// <summary>
+		/// Sets the attribute.
+		/// </summary>
+		/// <returns>The attribute.</returns>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <param name="index">Index.</param>
+		/// <param name="bright">If set to <c>true</c> bright.</param>
+		/// <param name="flashing">If set to <c>true</c> flashing.</param>
+		public ISpectrumScreen SetAttribute(int x, int y, int ink, int paper, bool bright = false, bool flashing = false)
+		{
+			if (x < 0 || x >= 32)
+				throw new IndexOutOfRangeException ("X value out of range");
+
+			if (y < 0 || y >= 24)
+				throw new IndexOutOfRangeException ("Y value out of range");
+
+			SetAttributeX (x, y, ink, paper, bright, flashing);
+
+			return this;
+		}
+
+		/// <summary>
+		/// Initialized the texture.
+		/// </summary>
+		void Awake () 
+		{
+			// Create the texture
+			_tex = new Texture2D (256, 192, TextureFormat.RGBA32, false, false);
+			_tex.filterMode = FilterMode.Point;
+
+			// The attributes section of the screen
+			_attrs = new ZXAttribute[32, 24];
+
+			// The pixels
+			_pixels = new bool[256, 192];
+
+			ClearX (7, 0, false, false);
+		}
+
+		/// <summary>
+		/// Update the Spectrum screen.
+		/// </summary>
+		void Update()
+		{
+			// Timer for ink / paper flash
+			inverseTime += Time.deltaTime;
+			if (inverseTime > 0.5f) 
+			{
+				inverseTime -= 0.5f;
+				inverse = !inverse;
+			}
+		}
+
+		/// <summary>
+		/// The late update is used because at this point everything has been drawn on the screen. 
+		/// </summary>
+		void LateUpdate()
+		{
+			// Get the current state of the screen
+			Color[] pixels = _tex.GetPixels ();
+
+			for (int x = 0; x < 256; x++) 
+			{
+				for (int y = 0; y < 192; y++) 
+				{
+					// Determine the origin of the attributes, they are always at the top. Origin only
+					// affects the drawing of pixels.
+					int attrY = /* _origin == Origin.Top ? */ (191 - y) / 8 /* : y / 8 */ ;
+						
+					// Get the attriute at this position
+					ZXAttribute attr = _attrs [x / 8, attrY];
+
+					// Determing if the attribute block is flashing
+					bool flashing = attr.Flashing && inverse;
+
+					// Set the colours for ink and paper
+					Color paper = ZXColour.Get (flashing ? attr.Ink : attr.Paper, attr.Bright);
+					Color ink = ZXColour.Get (flashing ? attr.Paper : attr.Ink, attr.Bright);
+
+					// Output the pixel
+					pixels[y * 256 + x] = _pixels [x, y] ? ink : paper;
+				}
+			}
+
+			// Apply the pixel changes
+			_tex.SetPixels (pixels);
+			_tex.Apply ();
+		}
+
+		/// <summary>
+		/// Clear the screen.
+		/// </summary>
+		/// <param name="ink">Ink.</param>
+		/// <param name="paper">Paper.</param>
+		/// <param name="bright">If set to <c>true</c> bright.</param>
+		/// <param name="flashing">If set to <c>true</c> flashing.</param>
+		private void ClearX(int ink, int paper, bool bright, bool flashing = false)
+		{
+			for (int y = 0; y < 24; y++) 
+			{
+				for (int x = 0; x < 32; x++) 
+				{
+					_attrs [x, y] = new ZXAttribute (ink, paper, bright, flashing);
+				}
+			}
+
+			for (int y = 0; y < 192; y++) 
+			{
+				for (int x = 0; x < 256; x++) 
+				{
+					_pixels [x, y] = false;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Set the attribute value at the given co-ordinates.
+		/// </summary>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <param name="ink">Ink.</param>
+		/// <param name="paper">Paper.</param>
+		/// <param name="bright">If set to <c>true</c> bright.</param>
+		/// <param name="flashing">If set to <c>true</c> flashing.</param>
+		private void SetAttributeX(int x, int y, int ink, int paper, bool bright = false, bool flashing = false)
+		{
+			_attrs [x, y].Ink = ink;
+			_attrs [x, y].Paper = paper;
+			_attrs [x, y].Bright = bright;
+			_attrs [x, y].Flashing = flashing;	
+		}
+	}
+}

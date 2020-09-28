@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Debug\DebugCreateSprite.cs" />
     <Compile Include="Assets\Scripts\Debug\DebugMode.cs" />
+    <Compile Include="Assets\Scripts\Helpers\AttributeExtensions.cs" />
     <Compile Include="Assets\Scripts\Helpers\CellPointExtension.cs" />
     <Compile Include="Assets\Scripts\Helpers\SpectrumShortExtensions.cs" />
     <Compile Include="Assets\Scripts\Importer\SnapshotImporter.cs" />
@@ -73,8 +74,13 @@
     <Compile Include="Assets\Scripts\Room\RoomKey.cs" />
     <Compile Include="Assets\Scripts\Room\RoomRenderer.cs" />
     <Compile Include="Assets\Scripts\Room\RoomStore.cs" />
+    <Compile Include="Assets\Scripts\ZXSpectrum\BoolArrayExtensions.cs" />
     <Compile Include="Assets\Scripts\ZXSpectrum\CharScreen.cs" />
+    <Compile Include="Assets\Scripts\ZXSpectrum\ISpectrumScreen.cs" />
+    <Compile Include="Assets\Scripts\ZXSpectrum\SpectrumScreen.cs" />
     <Compile Include="Assets\Scripts\ZXSpectrum\TextScreenRefresher.cs" />
+    <Compile Include="Assets\Scripts\ZXSpectrum\ZXAttribute.cs" />
+    <Compile Include="Assets\Scripts\ZXSpectrum\ZXColour.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
