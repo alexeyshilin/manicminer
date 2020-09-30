@@ -9,10 +9,14 @@ using UnityEngine;
 [RequireComponent(typeof(RoomStore))]
 public class RoomRenderer : MonoBehaviour
 {
-    // tmp
+    // TODO: refactoring needed
     int airHead = 252;
     int airSupplyLength = 27;
     // end
+
+    int score = 0;
+    int hiScore = 100;
+    const string ScoreFormat = "High Score {0:000000}   Score {1:000000}"; // TODO: do not live it here
 
     RoomStore store;
 
@@ -46,6 +50,9 @@ public class RoomRenderer : MonoBehaviour
         sr.sprite = Sprite.Create(screen.Texture, new Rect(0, 0, 256, 192), new Vector2(0, 1), 1f);
 
         RoomData data = store.Rooms[roomId];
+
+        airHead = data.AirSupply.Tip;
+        airSupplyLength = data.AirSupply.Length;
 
         StartCoroutine(DrawScreen(data));
         StartCoroutine(LoseAir());
@@ -147,6 +154,8 @@ public class RoomRenderer : MonoBehaviour
                 screen.SetAttribute(x, 16, 0, 6);
             }
 
+            screen.PrintMessage(0, 16, data.RoomName);
+
             // air supply
             for (int x = 0; x < 10; x++)
             {
@@ -168,6 +177,17 @@ public class RoomRenderer : MonoBehaviour
 
             byte[] airTipBlock = new byte[] { 0, 0, (byte)airHead, (byte)airHead, (byte)airHead, (byte)airHead, 0, 0 };
             screen.DrawSprite(4 + airSupplyLength, 17, 1, 1, airTipBlock);
+
+            screen.PrintMessage(0, 17, "AIR");
+
+            // Score
+            for (int x = 0; x < 32; x++)
+            {
+                screen.SetAttribute(x, 19, 6, 0);
+            }
+
+            screen.PrintMessage(0, 19, string.Format(ScoreFormat, hiScore, score));
+            // /Score
 
             /*
             CellPoint pt = data.StartPoint;

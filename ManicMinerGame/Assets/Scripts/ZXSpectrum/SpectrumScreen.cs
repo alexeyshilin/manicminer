@@ -10,8 +10,11 @@ namespace Com.SloanKelly.ZXSpectrum
 	/// </summary>
 	public class SpectrumScreen : MonoBehaviour, ISpectrumScreen
 	{
-		// True if flashing squares are to invert their ink/paper colours
-		bool inverse = false;
+        // ZX Spectrum font
+        byte[] charSet;
+
+        // True if flashing squares are to invert their ink/paper colours
+        bool inverse = false;
 
 		// Flashing timer
 		float inverseTime = 0f;
@@ -73,12 +76,15 @@ namespace Com.SloanKelly.ZXSpectrum
 		// The draw order for the sprites
 		SpriteFormat _spriteFormat = SpriteFormat.ColumnOrder;
 
-		/// <summary>
-		/// The Spectrum screen represented as a Texture that can be attached to a sprite. I recommend using a 1-unit-per-pixel size and an
-		/// orthogonal camera size 96; this matches the height of the 192-unit height screen.
-		/// </summary>
-		/// <value>The texture.</value>
-		public Texture2D Texture { get { return _tex; } }
+        [Tooltip("The char set resource file name")]
+        public string charSetResources = "charset";
+
+        /// <summary>
+        /// The Spectrum screen represented as a Texture that can be attached to a sprite. I recommend using a 1-unit-per-pixel size and an
+        /// orthogonal camera size 96; this matches the height of the 192-unit height screen.
+        /// </summary>
+        /// <value>The texture.</value>
+        public Texture2D Texture { get { return _tex; } }
 
 		/// <summary>
 		/// Poke the specified byte at x, y, and row.
@@ -286,8 +292,11 @@ namespace Com.SloanKelly.ZXSpectrum
         /// </summary>
         void Awake () 
 		{
-			// Create the texture
-			_tex = new Texture2D (256, 192, TextureFormat.RGBA32, false, false);
+            // Load the Spectrum font
+            LoadCharSet();
+
+            // Create the texture
+            _tex = new Texture2D (256, 192, TextureFormat.RGBA32, false, false);
 			_tex.filterMode = FilterMode.Point;
 
 			// The attributes section of the screen
@@ -401,5 +410,37 @@ namespace Com.SloanKelly.ZXSpectrum
 			_attrs [x, y].Bright = bright;
 			_attrs [x, y].Flashing = flashing;	
 		}
-	}
+
+        /// <summary>
+        /// Load the character set into memory
+        /// </summary>
+        private void LoadCharSet()
+        {
+            //TextAsset ta = Resources.Load<TextAsset>(charSetResources);
+            var ta = Resources.Load<TextAsset>(charSetResources);
+
+            charSet = new byte[ta.bytes.Length];
+
+            Array.Copy(ta.bytes, charSet, ta.bytes.Length);
+        }
+
+        public void PrintMessage(int x, int y, string msg)
+        {
+            int ptr = (y * 32 * 8) + x;
+
+            foreach (var ch in msg)
+            {
+                int ptrCopy = ptr;
+
+                int offestIntoCharset = (ch - ' ') * 8;
+
+                byte[] charBlock = new byte[8];
+                Array.Copy(charSet, offestIntoCharset, charBlock, 0, 8);
+                DrawSprite(x, y, 1, 1, charBlock);
+
+                x++;
+            }
+        }
+
+    }
 }

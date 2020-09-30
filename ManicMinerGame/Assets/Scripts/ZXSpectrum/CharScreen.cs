@@ -31,8 +31,8 @@ public class CharScreen : MonoBehaviour
 
     byte[] charSet;
 
-    [Tooltip("The char set resource file name")]
-    public string charSetResources = "charset";
+    //[Tooltip("The char set resource file name")]
+    //public string charSetResources = "charset";
 
     [Tooltip("The pixel perfect material")]
     public Material pixelPerfect;
@@ -61,7 +61,7 @@ public class CharScreen : MonoBehaviour
     {
         messages = new List<TextMessage>();
 
-        LoadCharSet();
+        //LoadCharSet();
         CreateTexture();
 
         target.material = pixelPerfect;
@@ -144,14 +144,14 @@ public class CharScreen : MonoBehaviour
         Cls(true);
     }
 
-    private void LoadCharSet()
-    {
-        //TextAsset ta = Resources.Load<TextAsset>(charSetResources);
-        var ta = Resources.Load<TextAsset>(charSetResources);
+    //private void LoadCharSet()
+    //{
+    //    //TextAsset ta = Resources.Load<TextAsset>(charSetResources);
+    //    var ta = Resources.Load<TextAsset>(charSetResources);
 
-        charSet = new byte[ta.bytes.Length];
+    //    charSet = new byte[ta.bytes.Length];
 
-        Array.Copy(ta.bytes, charSet, ta.bytes.Length);
-    }
+    //    Array.Copy(ta.bytes, charSet, ta.bytes.Length);
+    //}
 }
 //}
