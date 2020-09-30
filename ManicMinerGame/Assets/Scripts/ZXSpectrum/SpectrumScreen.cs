@@ -366,7 +366,7 @@ namespace Com.SloanKelly.ZXSpectrum
 		/// <param name="paper">Paper.</param>
 		/// <param name="bright">If set to <c>true</c> bright.</param>
 		/// <param name="flashing">If set to <c>true</c> flashing.</param>
-		private void ClearX(int ink, int paper, bool bright, bool flashing = false)
+		public void ClearX(int ink, int paper, bool bright, bool flashing = false)
 		{
 			for (int y = 0; y < 24; y++) 
 			{

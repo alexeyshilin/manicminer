@@ -142,6 +142,9 @@ public class RoomStore : MonoBehaviour
 
         data.KeyShape = importer.ReadBytes(8); // ITEMS (keys) shape
 
+        byte airSize = (byte)(32 - importer.Read() - 4);
+        byte airPixel = importer.Read();
+
         _rooms.Add(data);
     }
 

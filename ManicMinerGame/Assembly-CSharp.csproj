@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\Helpers\SpectrumShortExtensions.cs" />
     <Compile Include="Assets\Scripts\Importer\SnapshotImporter.cs" />
     <Compile Include="Assets\Scripts\Importer\SpriteTexture.cs" />
+    <Compile Include="Assets\Scripts\Room\AirSupply.cs" />
     <Compile Include="Assets\Scripts\Room\CellPoint.cs" />
     <Compile Include="Assets\Scripts\Room\Portal.cs" />
     <Compile Include="Assets\Scripts\Room\RoomData.cs" />
