@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\CollisionDetection\BitCollision.cs" />
     <Compile Include="Assets\Scripts\Controllers\GameController.cs" />
     <Compile Include="Assets\Scripts\Debug\DebugCreateSprite.cs" />
     <Compile Include="Assets\Scripts\Debug\DebugMode.cs" />

@@ -13,12 +13,20 @@ using UnityEngine;
 [RequireComponent(typeof(Com.SloanKelly.ZXSpectrum.SpectrumScreen))]
 public class GameController : MonoBehaviour
 {
+    enum GameState
+    {
+        Playing,
+        MoveToNextCavern,
+        Dead
+    }
+
     private int score = 0;
     private int hiScore = 100;
     private const string ScoreFormat = "High Score {0:000000}   Score {1:000000}";
 
     private RoomData roomData;
-    private bool gameOver;
+    //private bool gameOver;
+    private GameState state;
     private MinerWilly minerWilly;
     private List<Mob> mobs = new List<Mob>();
     private byte[] keyColours = new byte[] { 3, 6, 5, 4 }; // magenta, yellow, cyan, green
@@ -67,11 +75,90 @@ public class GameController : MonoBehaviour
         StartCoroutine(MoveMinerWilly(minerWilly));
         StartCoroutine(CycleColours(roomData.RoomKeys));
         StartCoroutine(AnimateConveyor(roomData));
+        StartCoroutine(CheckPortalCollision(roomData));
+        StartCoroutine(EndOfCavernCheck(roomData));
 
         if ((roomId >= 0 && roomId <= 6) || roomId==9 || roomId==15)
         {
             StartCoroutine(BidirectionalSprites());
         }
+    }
+
+    IEnumerator EndOfCavernCheck(RoomData roomData)
+    {
+        //throw new NotImplementedException();
+
+        while(state == GameState.Playing) yield return null;
+
+        if(state == GameState.MoveToNextCavern)
+        {
+            yield return MoveToNextCavern(roomData);
+        }
+        else
+        {
+            yield return GivePlayerTheBoot();
+        }
+
+        //yield return null;
+    }
+
+    IEnumerator GivePlayerTheBoot()
+    {
+        //throw new NotImplementedException();
+        yield return null;
+    }
+
+    IEnumerator MoveToNextCavern(RoomData data)
+    {
+        //throw new NotImplementedException();
+
+        while(roomData.AirSupply.Length >= 0)
+        {
+            // lose air
+            //yield return new WaitForSeconds(0.0001f);
+
+            data.AirSupply.Tip = (byte)(data.AirSupply.Tip << 1);
+            data.AirSupply.Tip = (byte)(data.AirSupply.Tip & 0xff);
+
+            if (roomData.AirSupply.Length > 0 && data.AirSupply.Tip == 0)
+            {
+                data.AirSupply.Length--;
+                data.AirSupply.Tip = 255;
+            }
+            // /lose air
+
+            score += 10;
+
+            yield return null;
+
+            // todo: move to next cavern
+        }
+
+        //yield return null;
+    }
+
+    IEnumerator CheckPortalCollision(RoomData roomData)
+    {
+        //throw new NotImplementedException();
+
+        while (state == GameState.Playing)
+        {
+            var touch = BitCollision.CheckCollision2x2(
+                 minerWilly.X, minerWilly.Y, minerWilly.Frames[minerWilly.Frame]
+                ,roomData.Portal.X, roomData.Portal.Y, roomData.Portal.Shape
+            );
+
+            if (touch)
+            {
+                //fin
+                //gameOver = true;
+                state = GameState.MoveToNextCavern;
+            }
+
+            yield return null;
+        }
+
+        //yield return null;
     }
 
     IEnumerator AnimateConveyor(RoomData roomData)
@@ -81,7 +168,7 @@ public class GameController : MonoBehaviour
 
         float speed = 0.1f;
 
-        while (!gameOver)
+        while (state == GameState.Playing)
         {
             byte[] tmp = roomData.ConveyorShape;
 
@@ -134,7 +221,7 @@ public class GameController : MonoBehaviour
         //throw new NotImplementedException();
         //yield return null;
 
-        while (!gameOver)
+        while (state == GameState.Playing)
         {
             foreach(var key in roomKeys)
             {
@@ -150,7 +237,7 @@ public class GameController : MonoBehaviour
 
     IEnumerator DrawScreen(RoomRenderer renderer, RoomData data)
     {
-        while(!gameOver)
+        while(state == GameState.Playing || state==GameState.MoveToNextCavern)
         {
             string scoreInfo = string.Format(ScoreFormat, hiScore, score);
             //renderer.DrawScreen(data, scoreInfo);
@@ -161,8 +248,9 @@ public class GameController : MonoBehaviour
 
     private IEnumerator LoseAir(RoomData data)
     {
-        while (!gameOver)
+        while (state == GameState.Playing)
         {
+            // lose air
             yield return new WaitForSeconds(1);
 
             data.AirSupply.Tip = (byte)(data.AirSupply.Tip << 1);
@@ -173,8 +261,13 @@ public class GameController : MonoBehaviour
                 data.AirSupply.Length--;
                 data.AirSupply.Tip = 255;
 
-                gameOver = !(data.AirSupply.Length >= 0);
+                //gameOver = !(data.AirSupply.Length >= 0);
+                if( data.AirSupply.Length < 0 )
+                {
+                    state = GameState.Dead;
+                }
             }
+            // /lose air
         }
     }
 
@@ -187,7 +280,7 @@ public class GameController : MonoBehaviour
         //float speed = 0.125f;
         float speed = 0.1f;
 
-        while (!gameOver)
+        while (state == GameState.Playing)
         {
             bool move = false;
 
@@ -248,7 +341,7 @@ public class GameController : MonoBehaviour
             m.FrameDirection = m.Frame < 4 ? 1 : -1;
         }
 
-        while (!gameOver)
+        while (state == GameState.Playing)
         {
             yield return new WaitForSeconds(0.1f); // 0.25f 0.125f 0.1f
 
