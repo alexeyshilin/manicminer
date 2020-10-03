@@ -139,12 +139,12 @@ public class GameController : MonoBehaviour
             score += 10;
 
             yield return null;
-
-            // move to next cavern
-            roomId++;
-            UnityEngine.PlayerPrefs.SetInt("_room", roomId);
-            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
+
+        // move to next cavern
+        roomId++;
+        UnityEngine.PlayerPrefs.SetInt("_room", roomId);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
 
         //yield return null;
     }
