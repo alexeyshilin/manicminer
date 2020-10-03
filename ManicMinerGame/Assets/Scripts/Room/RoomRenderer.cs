@@ -329,6 +329,8 @@ public class RoomRenderer : MonoBehaviour
 
         foreach (var g in mobs)
         {
+            if (g.Attribute == 0) continue;
+
             byte[] graphic = data.GuardianGraphics[g.Frame];
 
             screen.FillAttribute(g.X, g.Y, 2, 2, g.Attribute.GetInk(), g.Attribute.GetPaper());
