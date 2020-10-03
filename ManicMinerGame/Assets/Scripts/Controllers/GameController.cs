@@ -21,6 +21,8 @@ public class GameController : MonoBehaviour
     private bool gameOver;
     private MinerWilly minerWilly;
     private List<Mob> mobs = new List<Mob>();
+    private byte[] keyColours = new byte[] { 3, 6, 5, 4 }; // magenta, yellow, cyan, green
+    private int currentKeyColour = 0;
 
     [Tooltip("The room number (0-19)")]
     public int roomId; // 0-19
@@ -47,10 +49,30 @@ public class GameController : MonoBehaviour
         StartCoroutine(DrawScreen(roomRenderer, roomData));
         StartCoroutine(LoseAir(roomData));
         StartCoroutine(MoveMinerWilly(minerWilly));
+        StartCoroutine(CycleColours(roomData.RoomKeys));
 
         if ((roomId >= 0 && roomId <= 6) || roomId==9 || roomId==15)
         {
             StartCoroutine(BidirectionalSprites());
+        }
+    }
+
+    private IEnumerator CycleColours(List<RoomKey> roomKeys)
+    {
+        //throw new NotImplementedException();
+        //yield return null;
+
+        while (!gameOver)
+        {
+            foreach(var key in roomKeys)
+            {
+                key.Attr = keyColours[currentKeyColour];
+            }
+
+            currentKeyColour++;
+            currentKeyColour %= keyColours.Length;
+
+            yield return new WaitForSeconds(0.1f);
         }
     }
 

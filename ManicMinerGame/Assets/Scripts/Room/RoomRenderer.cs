@@ -213,7 +213,9 @@ public class RoomRenderer : MonoBehaviour
         byte[] keyShape = new byte[] { 255, 255, 255, 255, 255, 255, 255, 255 };
         foreach (var key in data.RoomKeys)
         {
-            screen.SetAttribute(key.Position.X, key.Position.Y, 2, 0, true, false);
+            if (key.Attr != 255) continue;
+
+            screen.SetAttribute(key.Position.X, key.Position.Y, key.Attr, 0, true, false);
             //screen.DrawSprite(key.Position.X, key.Position.Y, 1, 1, keyShape);
             screen.DrawSprite(key.Position.X, key.Position.Y, 1, 1, data.KeyShape);
         }
