@@ -67,156 +67,186 @@ public class RoomRenderer : MonoBehaviour
     {
         //while (airSupplyLength > 0)
         //{
-            screen.ClearX(7, 0, false);
-            //////////////////////////////////////
+        screen.ClearX(7, 0, false);
+        //////////////////////////////////////
 
-            for (int y = 0; y < 16; y++)
-            {
-                for (int x = 0; x < 32; x++)
-                {
-                    //int attr = data.Attributes[y,x];
-                    int attr = data.Attributes[y * 32 + x];
+        DrawRoom(data);
 
-                    if (attr != 0)
-                    {
-                        if (!data.Blocks.ContainsKey(attr)) continue; // hack for room #19
+        DrawItems(data); // keys
 
-                        //Sprite block = data.Blocks[attr];
-
-                        /*
-                        GameObject go = new GameObject(string.Format("({0}, {1})", x, y));
-
-                        var sr = go.AddComponent<SpriteRenderer>();
-                        sr.sprite = block;
-                        sr.material = pixelPerfect;
-
-                        go.transform.SetParent(target);
-
-                        //go.transform.position = new Vector3(x * 8, y * 8, 0);
-                        //go.transform.localPosition = new Vector3(x*8, -192 + y*8, 0);
-                        //go.transform.localPosition = new Vector3(x * 8, -128 + y * 8, 0);
-                        go.transform.localPosition = new Vector3(x * 8, y * -8, 0);
-                        */
-
-                        // AddSprite(string.Format("({0}, {1})", x, y), new Vector3(x, y), block);
-
-                        int ink = attr.GetInk();
-                        int paper = attr.GetPaper();
-                        bool bright = attr.IsBright();
-                        bool flashing = attr.IsFlashing();
-
-                        screen.SetAttribute(x, y, ink, paper, bright, flashing);
-                        screen.DrawSprite(x, y, 1, 1, data.Blocks[attr]);
-                    }
-                }
-            }
-
-            data.Portal.Attr.Flashing = true; // Flashing!!!
-
-            //screen.SetAttribute(data.Portal.X, data.Portal.Y, data.Portal.Attr);
-            //screen.DrawSprite(data.Portal.X, data.Portal.Y, 2, 2, data.Portal.Shape);
-
-            for (int py = 0; py < 2; py++)
-            {
-                for (int px = 0; px < 2; px++)
-                {
-                    screen.SetAttribute(data.Portal.X + px, data.Portal.Y + py, data.Portal.Attr);
-                }
-            }
-
-            // KEYS
-            byte[] keyShape = new byte[] { 255, 255, 255, 255, 255, 255, 255, 255 };
-            foreach (var key in data.RoomKeys)
-            {
-                screen.SetAttribute(key.Position.X, key.Position.Y, 2, 0, true, false);
-                //screen.DrawSprite(key.Position.X, key.Position.Y, 1, 1, keyShape);
-                screen.DrawSprite(key.Position.X, key.Position.Y, 1, 1, data.KeyShape);
-            }
-            // /KEYS
-
-            screen.RowOrderSprite();
-            screen.DrawSprite(data.Portal.X, data.Portal.Y, 2, 2, data.Portal.Shape);
-
-            screen.ColumnOrderSprite();
+        DrawPortal(data);
 
 
-            /*
-            GameObject start = new GameObject("Miner Willy Start");
-            var ss = start.AddComponent<SpriteRenderer>();
-            ss.sprite = minerStartTemp;
-            ss.material = pixelPerfect;
+        /*
+        GameObject start = new GameObject("Miner Willy Start");
+        var ss = start.AddComponent<SpriteRenderer>();
+        ss.sprite = minerStartTemp;
+        ss.material = pixelPerfect;
 
-            CellPoint pt = data.StartPoint;
+        CellPoint pt = data.StartPoint;
 
-            start.transform.SetParent(target);
-            //start.transform.localPosition = new Vector3(pt.x*8, -128 + pt.y*8);
-            start.transform.localPosition = new Vector3(pt.x * 8, pt.y * -8);
-            */
+        start.transform.SetParent(target);
+        //start.transform.localPosition = new Vector3(pt.x*8, -128 + pt.y*8);
+        start.transform.localPosition = new Vector3(pt.x * 8, pt.y * -8);
+        */
 
-            // room title
-            for (int x = 0; x < 32; x++)
-            {
-                screen.SetAttribute(x, 16, 0, 6);
-            }
+        DrawRoomTitle(data);
 
-            screen.PrintMessage(0, 16, data.RoomName);
+        DrawAairSupply(data);
 
-            // air supply
-            for (int x = 0; x < 10; x++)
-            {
-                screen.SetAttribute(x, 17, 7, 2);
-            }
+        DrawScore(playerScore);
 
-            for (int x = 10; x < 32; x++)
-            {
-                screen.SetAttribute(x, 17, 7, 4);
-            }
+        /*
+        CellPoint pt = data.StartPoint;
+        //AddSprite("Miner Willy Start", new Vector3(pt.x, pt.y), minerStartTemp);
+        AddSprite("Miner Willy Start", pt.ToVector3(), minerStartTemp);
+
+        foreach(var key in data.RoomKeys)
+        {
+            AddSprite("Key", key.Position.ToVector3(), roomKeyTemp);
+        }
 
 
-            byte[] airBlock = { 0, 0, 255, 255, 255, 255, 0, 0 };
+        // HACK: this does not belong here
+        charScreen.PrintAt(data.RoomName, 0, 16);
+        charScreen.ApplyText();
+        */
 
-            var airSupplyLength = data.AirSupply.Length;
-            var airHead = data.AirSupply.Tip;
-
-            for (int x = 0; x < airSupplyLength; x++)
-            {
-                screen.DrawSprite(x + 4, 17, 1, 1, airBlock);
-            }
-
-            byte[] airTipBlock = new byte[] { 0, 0, (byte)airHead, (byte)airHead, (byte)airHead, (byte)airHead, 0, 0 };
-            screen.DrawSprite(4 + airSupplyLength, 17, 1, 1, airTipBlock);
-
-            screen.PrintMessage(0, 17, "AIR");
-
-            // Score
-            for (int x = 0; x < 32; x++)
-            {
-                screen.SetAttribute(x, 19, 6, 0);
-            }
-
-            //screen.PrintMessage(0, 19, string.Format(ScoreFormat, hiScore, score));
-            screen.PrintMessage(0, 19, playerScore);
-            // /Score
-
-            /*
-            CellPoint pt = data.StartPoint;
-            //AddSprite("Miner Willy Start", new Vector3(pt.x, pt.y), minerStartTemp);
-            AddSprite("Miner Willy Start", pt.ToVector3(), minerStartTemp);
-
-            foreach(var key in data.RoomKeys)
-            {
-                AddSprite("Key", key.Position.ToVector3(), roomKeyTemp);
-            }
-
-
-            // HACK: this does not belong here
-            charScreen.PrintAt(data.RoomName, 0, 16);
-            charScreen.ApplyText();
-            */
-
-            //////////////////////////////////////
-            //yield return null;
+        //////////////////////////////////////
+        //yield return null;
         //}
+    }
+
+    private void DrawScore(string playerScore)
+    {
+        // Score
+        for (int x = 0; x < 32; x++)
+        {
+            screen.SetAttribute(x, 19, 6, 0);
+        }
+
+        //screen.PrintMessage(0, 19, string.Format(ScoreFormat, hiScore, score));
+        screen.PrintMessage(0, 19, playerScore);
+        // /Score
+    }
+
+    private void DrawAairSupply(RoomData data)
+    {
+        // air supply
+        for (int x = 0; x < 10; x++)
+        {
+            screen.SetAttribute(x, 17, 7, 2);
+        }
+
+        for (int x = 10; x < 32; x++)
+        {
+            screen.SetAttribute(x, 17, 7, 4);
+        }
+
+
+        byte[] airBlock = { 0, 0, 255, 255, 255, 255, 0, 0 };
+
+        var airSupplyLength = data.AirSupply.Length;
+        var airHead = data.AirSupply.Tip;
+
+        for (int x = 0; x < airSupplyLength; x++)
+        {
+            screen.DrawSprite(x + 4, 17, 1, 1, airBlock);
+        }
+
+        byte[] airTipBlock = new byte[] { 0, 0, (byte)airHead, (byte)airHead, (byte)airHead, (byte)airHead, 0, 0 };
+        screen.DrawSprite(4 + airSupplyLength, 17, 1, 1, airTipBlock);
+
+        screen.PrintMessage(0, 17, "AIR");
+    }
+
+    private void DrawRoomTitle(RoomData data)
+    {
+        // room title
+        for (int x = 0; x < 32; x++)
+        {
+            screen.SetAttribute(x, 16, 0, 6);
+        }
+
+        screen.PrintMessage(0, 16, data.RoomName);
+    }
+
+    private void DrawItems(RoomData data)
+    {
+        // KEYS
+        byte[] keyShape = new byte[] { 255, 255, 255, 255, 255, 255, 255, 255 };
+        foreach (var key in data.RoomKeys)
+        {
+            screen.SetAttribute(key.Position.X, key.Position.Y, 2, 0, true, false);
+            //screen.DrawSprite(key.Position.X, key.Position.Y, 1, 1, keyShape);
+            screen.DrawSprite(key.Position.X, key.Position.Y, 1, 1, data.KeyShape);
+        }
+        // /KEYS
+    }
+
+    private void DrawPortal(RoomData data)
+    {
+        for (int py = 0; py < 2; py++)
+        {
+            for (int px = 0; px < 2; px++)
+            {
+                screen.SetAttribute(data.Portal.X + px, data.Portal.Y + py, data.Portal.Attr);
+            }
+        }
+
+        screen.RowOrderSprite();
+        screen.DrawSprite(data.Portal.X, data.Portal.Y, 2, 2, data.Portal.Shape);
+
+        screen.ColumnOrderSprite();
+    }
+
+    private void DrawRoom(RoomData data)
+    {
+        for (int y = 0; y < 16; y++)
+        {
+            for (int x = 0; x < 32; x++)
+            {
+                //int attr = data.Attributes[y,x];
+                int attr = data.Attributes[y * 32 + x];
+
+                if (attr != 0)
+                {
+                    if (!data.Blocks.ContainsKey(attr)) continue; // hack for room #19
+
+                    //Sprite block = data.Blocks[attr];
+
+                    /*
+                    GameObject go = new GameObject(string.Format("({0}, {1})", x, y));
+
+                    var sr = go.AddComponent<SpriteRenderer>();
+                    sr.sprite = block;
+                    sr.material = pixelPerfect;
+
+                    go.transform.SetParent(target);
+
+                    //go.transform.position = new Vector3(x * 8, y * 8, 0);
+                    //go.transform.localPosition = new Vector3(x*8, -192 + y*8, 0);
+                    //go.transform.localPosition = new Vector3(x * 8, -128 + y * 8, 0);
+                    go.transform.localPosition = new Vector3(x * 8, y * -8, 0);
+                    */
+
+                    // AddSprite(string.Format("({0}, {1})", x, y), new Vector3(x, y), block);
+
+                    int ink = attr.GetInk();
+                    int paper = attr.GetPaper();
+                    bool bright = attr.IsBright();
+                    bool flashing = attr.IsFlashing();
+
+                    screen.SetAttribute(x, y, ink, paper, bright, flashing);
+                    screen.DrawSprite(x, y, 1, 1, data.Blocks[attr]);
+                }
+            }
+        }
+
+        data.Portal.Attr.Flashing = true; // Flashing!!!
+
+        //screen.SetAttribute(data.Portal.X, data.Portal.Y, data.Portal.Attr);
+        //screen.DrawSprite(data.Portal.X, data.Portal.Y, 2, 2, data.Portal.Shape);
     }
 
     /*
