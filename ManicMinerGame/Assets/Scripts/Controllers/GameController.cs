@@ -95,6 +95,8 @@ public class GameController : MonoBehaviour
 
         while (!gameOver)
         {
+            bool move = false;
+
             if(Input.GetKey(KeyCode.W))
             {
                 if (minerWilly.Frame > 3)
@@ -110,7 +112,7 @@ public class GameController : MonoBehaviour
                     minerWilly.X++;
                 }
 
-                yield return new WaitForSeconds(speed);
+                move = true;
             }
             else if (Input.GetKey(KeyCode.Q))
             {
@@ -127,6 +129,11 @@ public class GameController : MonoBehaviour
                     minerWilly.X--;
                 }
 
+                move = true;
+            }
+
+            if (move)
+            {
                 yield return new WaitForSeconds(speed);
             }
             else
