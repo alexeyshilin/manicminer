@@ -6,23 +6,23 @@ using System.Collections;
 //using System.Threading.Tasks;
 using UnityEngine;
 
-[RequireComponent(typeof(RoomStore))]
+[RequireComponent(typeof(Com.SloanKelly.ZXSpectrum.SpectrumScreen))]
 public class RoomRenderer : MonoBehaviour
 {
     // TODO: refactoring needed
-    int airHead = 252;
-    int airSupplyLength = 27;
+    //int airHead = 252;
+    //int airSupplyLength = 27;
     // end
 
-    int score = 0;
-    int hiScore = 100;
-    const string ScoreFormat = "High Score {0:000000}   Score {1:000000}"; // TODO: do not live it here
+    //int score = 0;
+    //int hiScore = 100;
+    //const string ScoreFormat = "High Score {0:000000}   Score {1:000000}"; // TODO: do not live it here
 
-    RoomStore store;
+    //RoomStore store;
 
     Com.SloanKelly.ZXSpectrum.SpectrumScreen screen;
 
-    public int roomId; // 0-19
+    //public int roomId; // 0-19
 
     public Transform target;
 
@@ -36,32 +36,37 @@ public class RoomRenderer : MonoBehaviour
     // HACK: this does not belog here
     //public CharScreen charScreen;
 
-    IEnumerator Start()
-    {
-        store = GetComponent<RoomStore>();
+    //void Awake()
+    //{
+    //    Start();
+    //}
 
-        while(!store.IsReady)
-        {
-            yield return null;
-        }
+    void Start()
+    {
+        //store = GetComponent<RoomStore>();
+
+        //while(!store.IsReady)
+        //{
+        //    yield return null;
+        //}
 
         screen = GetComponent<Com.SloanKelly.ZXSpectrum.SpectrumScreen>();
         var sr = target.GetComponent<SpriteRenderer>();
         sr.sprite = Sprite.Create(screen.Texture, new Rect(0, 0, 256, 192), new Vector2(0, 1), 1f);
 
-        RoomData data = store.Rooms[roomId];
+        //RoomData data = store.Rooms[roomId];
 
-        airHead = data.AirSupply.Tip;
-        airSupplyLength = data.AirSupply.Length;
+        //airHead = data.AirSupply.Tip;
+        //airSupplyLength = data.AirSupply.Length;
 
-        StartCoroutine(DrawScreen(data));
-        StartCoroutine(LoseAir());
+        //StartCoroutine(DrawScreen(data));
+        //StartCoroutine(LoseAir());
     }
 
-    private IEnumerator DrawScreen(RoomData data)
+    public void DrawScreen(RoomData data, string playerScore)
     {
-        while (airSupplyLength > 0)
-        {
+        //while (airSupplyLength > 0)
+        //{
             screen.ClearX(7, 0, false);
             //////////////////////////////////////
 
@@ -170,6 +175,9 @@ public class RoomRenderer : MonoBehaviour
 
             byte[] airBlock = { 0, 0, 255, 255, 255, 255, 0, 0 };
 
+            var airSupplyLength = data.AirSupply.Length;
+            var airHead = data.AirSupply.Tip;
+
             for (int x = 0; x < airSupplyLength; x++)
             {
                 screen.DrawSprite(x + 4, 17, 1, 1, airBlock);
@@ -186,7 +194,8 @@ public class RoomRenderer : MonoBehaviour
                 screen.SetAttribute(x, 19, 6, 0);
             }
 
-            screen.PrintMessage(0, 19, string.Format(ScoreFormat, hiScore, score));
+            //screen.PrintMessage(0, 19, string.Format(ScoreFormat, hiScore, score));
+            screen.PrintMessage(0, 19, playerScore);
             // /Score
 
             /*
@@ -206,10 +215,11 @@ public class RoomRenderer : MonoBehaviour
             */
 
             //////////////////////////////////////
-            yield return null;
-        }
+            //yield return null;
+        //}
     }
 
+    /*
     private IEnumerator LoseAir()
     {
         while(airSupplyLength>0)
@@ -226,6 +236,7 @@ public class RoomRenderer : MonoBehaviour
             } 
         }
     }
+    */
 
     /*
     protected void AddSprite(string name, Vector3 pos, Sprite sprite)
