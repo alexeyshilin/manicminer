@@ -41,6 +41,15 @@ public class GameController : MonoBehaviour
 
     IEnumerator Start()
     {
+        if(roomId < 0)
+        {
+            roomId = 0;
+        }
+        else
+        {
+            roomId = UnityEngine.PlayerPrefs.GetInt("_room");
+        }
+
         var store = GetComponent<RoomStore>();
         var roomRenderer = GetComponent<RoomRenderer>();
 
@@ -131,7 +140,10 @@ public class GameController : MonoBehaviour
 
             yield return null;
 
-            // todo: move to next cavern
+            // move to next cavern
+            roomId++;
+            UnityEngine.PlayerPrefs.SetInt("_room", roomId);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
 
         //yield return null;
