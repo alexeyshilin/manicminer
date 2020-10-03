@@ -37,6 +37,7 @@ public class RoomData
     public List<byte[]> SpecialGraphics { get; set; }
 
     public List<byte[]> GuardianGraphics { get; set; }
+    public byte BorderColour { get; internal set; }
 
     public RoomData()
     {
