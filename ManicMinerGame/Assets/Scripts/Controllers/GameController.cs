@@ -41,9 +41,11 @@ public class GameController : MonoBehaviour
 
     IEnumerator Start()
     {
-        if(roomId < 0)
+        //UnityEngine.PlayerPrefs.SetInt("_room", 0);
+        if (roomId < 0)
         {
-            roomId = 0;
+            //roomId = 0;
+            roomId = UnityEngine.PlayerPrefs.GetInt("_room"); // check PlayerPrefs._room
         }
         else
         {
@@ -121,7 +123,7 @@ public class GameController : MonoBehaviour
     {
         //throw new NotImplementedException();
 
-        while(roomData.AirSupply.Length >= 0)
+        while(roomData.AirSupply.Length > 0)
         {
             // lose air
             //yield return new WaitForSeconds(0.0001f);
@@ -138,7 +140,8 @@ public class GameController : MonoBehaviour
 
             score += 10;
 
-            yield return null;
+            //yield return null;
+            yield return new WaitForSeconds(0.0001f);
         }
 
         // move to next cavern
