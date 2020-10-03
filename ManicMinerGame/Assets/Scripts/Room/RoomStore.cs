@@ -6,8 +6,11 @@ public class RoomStore : MonoBehaviour
 {
     public string snapshotFile = "manicminer";
     private List<RoomData> _rooms;
+    private List<byte[]> _sprites = new List<byte[]>();
 
     public IList<RoomData> Rooms { get { return _rooms; } }
+
+    public List<byte[]> MinerWillySprites { get { return _sprites; } }
 
     public bool IsReady { get; private set; }
 
@@ -27,6 +30,13 @@ public class RoomStore : MonoBehaviour
                 ImportRoom(importer, IsSpecialRoom(i));
 
                 offset += 1024;
+            }
+
+            importer.Seek(33280); // 33280-33535 - sprites for Miner Willy
+            for(int i=0; i<8; i++)
+            {
+                byte[] sprite = importer.ReadBytes(32);
+                _sprites.Add(sprite);
             }
         }
 

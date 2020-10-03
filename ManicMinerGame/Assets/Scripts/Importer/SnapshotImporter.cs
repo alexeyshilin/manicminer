@@ -71,5 +71,8 @@ public class SnapshotImporter : IDisposable
     protected void Dispose(bool disposed)
     {
         // cleanup
+        _writer.Close();
+        _reader.Close();
+        _ms.Dispose();
     }
 }

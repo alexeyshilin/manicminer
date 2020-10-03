@@ -1,4 +1,5 @@
 ﻿//using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 //using System.Linq;
@@ -72,6 +73,8 @@ public class RoomRenderer : MonoBehaviour
 
         DrawRoom(data);
 
+        DrawMinerWilly(data);
+
         DrawItems(data); // keys
 
         DrawHorizontalGuardians(data);
@@ -118,17 +121,36 @@ public class RoomRenderer : MonoBehaviour
         //}
     }
 
-    public void DrawScreen(RoomData data, IList<Mob> mobs, string playerScore)
+    public void DrawScreen(RoomData data, MinerWilly minerWilly, IList<Mob> mobs, string playerScore)
     {
         screen.ClearX(7, 0, false);
-        
+
+        DrawMinerWilly(minerWilly);
         DrawRoom(data);
+        //DrawMinerWilly(minerWilly);
         DrawItems(data); // keys
         DrawHorizontalGuardians(mobs, data);
         DrawPortal(data);
         DrawRoomTitle(data);
         DrawAairSupply(data);
         DrawScore(playerScore);
+    }
+
+    private void DrawMinerWilly(RoomData data)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void DrawMinerWilly(MinerWilly m)
+    {
+        //throw new NotImplementedException();
+
+        screen.RowOrderSprite();
+
+        byte[] graphic = m.Frames[m.Frame];
+
+        screen.FillAttribute(m.X, m.Y, 2, 2, m.Attribute.GetInk(), m.Attribute.GetPaper());
+        screen.DrawSprite(m.X, m.Y, 2, 2, graphic);
     }
 
     private void DrawScore(string playerScore)

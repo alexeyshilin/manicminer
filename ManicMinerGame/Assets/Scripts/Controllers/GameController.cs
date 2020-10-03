@@ -13,14 +13,14 @@ using UnityEngine;
 [RequireComponent(typeof(Com.SloanKelly.ZXSpectrum.SpectrumScreen))]
 public class GameController : MonoBehaviour
 {
-    int score = 0;
-    int hiScore = 100;
-    const string ScoreFormat = "High Score {0:000000}   Score {1:000000}";
+    private int score = 0;
+    private int hiScore = 100;
+    private const string ScoreFormat = "High Score {0:000000}   Score {1:000000}";
 
     private RoomData roomData;
     private bool gameOver;
-
-    List<Mob> mobs = new List<Mob>();
+    private MinerWilly minerWilly;
+    private List<Mob> mobs = new List<Mob>();
 
     [Tooltip("The room number (0-19)")]
     public int roomId; // 0-19
@@ -40,12 +40,15 @@ public class GameController : MonoBehaviour
         //RoomData data = store.Rooms[roomId];
         roomData = store.Rooms[roomId];
 
+        minerWilly = new MinerWilly(store.MinerWillySprites, roomData.StartPoint.X, roomData.StartPoint.Y, 4, 0, 0, 7);
+
         roomData.HorizontalGuardians.ForEach(g=>mobs.Add(new Mob(g)));
 
         StartCoroutine(DrawScreen(roomRenderer, roomData));
         StartCoroutine(LoseAir(roomData));
+        StartCoroutine(MoveMinerWilly(minerWilly));
 
-        if((roomId >= 0 && roomId <= 6) || roomId==9 || roomId==15)
+        if ((roomId >= 0 && roomId <= 6) || roomId==9 || roomId==15)
         {
             StartCoroutine(BidirectionalSprites());
         }
@@ -57,7 +60,7 @@ public class GameController : MonoBehaviour
         {
             string scoreInfo = string.Format(ScoreFormat, hiScore, score);
             //renderer.DrawScreen(data, scoreInfo);
-            renderer.DrawScreen(data, mobs, scoreInfo);
+            renderer.DrawScreen(data, minerWilly, mobs, scoreInfo);
             yield return null;
         }
     }
@@ -78,6 +81,60 @@ public class GameController : MonoBehaviour
 
                 gameOver = !(data.AirSupply.Length >= 0);
             }
+        }
+    }
+
+    private IEnumerator MoveMinerWilly(MinerWilly minerWilly)
+    {
+        //throw new NotImplementedException();
+        //yield return null;
+
+        //float speed = 0.25f;
+        //float speed = 0.125f;
+        float speed = 0.1f;
+
+        while (!gameOver)
+        {
+            if(Input.GetKey(KeyCode.W))
+            {
+                if (minerWilly.Frame > 3)
+                {   
+                    minerWilly.Frame -= 4;
+                }
+
+                minerWilly.Frame += 1;
+
+                if(minerWilly.Frame >3)
+                {
+                    minerWilly.Frame = 0;
+                    minerWilly.X++;
+                }
+
+                yield return new WaitForSeconds(speed);
+            }
+            else if (Input.GetKey(KeyCode.Q))
+            {
+                if(minerWilly.Frame<4)
+                {
+                    minerWilly.Frame += 4;
+                }
+
+                minerWilly.Frame -= 1;
+
+                if (minerWilly.Frame < 4)
+                {
+                    minerWilly.Frame = 7;
+                    minerWilly.X--;
+                }
+
+                yield return new WaitForSeconds(speed);
+            }
+            else
+            {
+                yield return null;
+            }
+
+            //yield return null;
         }
     }
 
