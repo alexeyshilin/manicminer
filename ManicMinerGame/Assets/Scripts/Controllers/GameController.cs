@@ -81,7 +81,7 @@ public class GameController : MonoBehaviour
 
         StartCoroutine(DrawScreen(roomRenderer, roomData));
         StartCoroutine(LoseAir(roomData));
-        StartCoroutine(MoveMinerWilly(minerWilly));
+        StartCoroutine(MoveMinerWilly(minerWilly, roomData));
         StartCoroutine(CycleColours(roomData.RoomKeys));
         StartCoroutine(AnimateConveyor(roomData));
         StartCoroutine(CheckPortalCollision(roomData));
@@ -283,7 +283,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private IEnumerator MoveMinerWilly(MinerWilly minerWilly)
+    private IEnumerator MoveMinerWilly(MinerWilly minerWilly, RoomData data)
     {
         //throw new NotImplementedException();
         //yield return null;
@@ -294,38 +294,49 @@ public class GameController : MonoBehaviour
 
         while (state == GameState.Playing)
         {
+            // walls
+            int attrRight = data.Attributes[minerWilly.Y * 32 + (minerWilly.X + 1)];
+            int attrLeft = data.Attributes[minerWilly.Y * 32 + (minerWilly.X - 1)];
+
+            bool wallRight = data.Blocks[attrRight].Type == BlockType.Wall;
+            bool wallLeft = data.Blocks[attrLeft].Type == BlockType.Wall;
+            // /walls
+
             bool move = false;
 
-            if(Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.W))
             {
                 if (minerWilly.Frame > 3)
-                {   
+                {
                     minerWilly.Frame -= 4;
                 }
 
-                minerWilly.Frame += 1;
+                //if (!wallRight || (wallRight && minerWilly.Frame != 4))
+                if (!wallRight)
+                    minerWilly.Frame += 1;
 
-                if(minerWilly.Frame >3)
+                if (minerWilly.Frame > 3)
                 {
                     minerWilly.Frame = 0;
-                    minerWilly.X++;
+                    if (!wallRight) minerWilly.X++;
                 }
 
                 move = true;
             }
             else if (Input.GetKey(KeyCode.Q))
             {
-                if(minerWilly.Frame<4)
+                if (minerWilly.Frame < 4)
                 {
                     minerWilly.Frame += 4;
                 }
 
-                minerWilly.Frame -= 1;
+                if (!wallLeft || (wallLeft && minerWilly.Frame != 4))
+                    minerWilly.Frame -= 1;
 
                 if (minerWilly.Frame < 4)
                 {
                     minerWilly.Frame = 7;
-                    minerWilly.X--;
+                    if (!wallLeft) minerWilly.X--;
                 }
 
                 move = true;
