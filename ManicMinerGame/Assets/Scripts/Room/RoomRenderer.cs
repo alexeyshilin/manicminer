@@ -125,9 +125,8 @@ public class RoomRenderer : MonoBehaviour
     {
         screen.ClearX(7, 0, false);
 
-        DrawMinerWilly(minerWilly);
+        DrawMinerWilly(minerWilly, data);
         DrawRoom(data);
-        //DrawMinerWilly(minerWilly);
         DrawItems(data); // keys
         DrawHorizontalGuardians(mobs, data);
         DrawPortal(data);
@@ -141,7 +140,7 @@ public class RoomRenderer : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    private void DrawMinerWilly(MinerWilly m)
+    private void DrawMinerWilly(MinerWilly m, RoomData data)
     {
         //throw new NotImplementedException();
 
@@ -149,7 +148,17 @@ public class RoomRenderer : MonoBehaviour
 
         byte[] graphic = m.Frames[m.Frame];
 
-        screen.FillAttribute(m.X, m.Y, 2, 2, m.Attribute.GetInk(), m.Attribute.GetPaper());
+        //screen.FillAttribute(m.X, m.Y, 2, 2, m.Attribute.GetInk(), m.Attribute.GetPaper());
+
+        int attr = data.Attributes[m.Y * 32 + m.X];
+        attr &= 0xF8; // 11111000
+        //attr |= m.Attribute.GetInk();
+        attr |= 7; // always white
+
+        //screen.SetAttribute(key.Position.X, key.Position.Y, key.Attr, 0, true, false);
+        Com.SloanKelly.ZXSpectrum.ZXAttribute attribute = new Com.SloanKelly.ZXSpectrum.ZXAttribute((byte)attr);
+
+        screen.FillAttribute(m.X, m.Y, 2, 2, attribute);
         screen.DrawSprite(m.X, m.Y, 2, 2, graphic);
     }
 

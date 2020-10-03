@@ -129,11 +129,16 @@ namespace Com.SloanKelly.ZXSpectrum
 			}
 		}
 
-		/// <summary>
-		/// Set the overwrite draw mode on.
-		/// </summary>
-		/// <returns>The draw.</returns>
-		public void OverwriteDraw()
+        public void FillAttribute(int x, int y, int width, int height, ZXAttribute attr)
+        {
+            FillAttribute(x, y, width, height, attr.Ink, attr.Paper, attr.Bright, attr.Flashing);
+        }
+
+        /// <summary>
+        /// Set the overwrite draw mode on.
+        /// </summary>
+        /// <returns>The draw.</returns>
+        public void OverwriteDraw()
 		{
 			_drawMode = DrawMode.Overwrite;
 		}
