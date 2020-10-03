@@ -307,6 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6709a1b900c4716409e0c4149648f374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 364493326}
   roomId: 0
 --- !u!1 &688407286
 GameObject:

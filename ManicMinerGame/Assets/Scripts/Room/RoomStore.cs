@@ -123,7 +123,7 @@ public class RoomStore : MonoBehaviour
         data.ConveyorDirection = (ConveyorDirection)importer.Read();
         importer.ReadBytes(3);
 
-        importer.Read(); // border color
+        data.BorderColour = importer.Read(); // border color
 
         // positions of the items (keys)
         bool addKey = true;

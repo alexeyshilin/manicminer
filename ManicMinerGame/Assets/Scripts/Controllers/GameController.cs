@@ -24,6 +24,8 @@ public class GameController : MonoBehaviour
     private byte[] keyColours = new byte[] { 3, 6, 5, 4 }; // magenta, yellow, cyan, green
     private int currentKeyColour = 0;
 
+    public Camera mainCamera;
+
     [Tooltip("The room number (0-19)")]
     public int roomId; // 0-19
 
@@ -57,6 +59,8 @@ public class GameController : MonoBehaviour
                 break;
             }
         }
+
+        mainCamera.backgroundColor = Com.SloanKelly.ZXSpectrum.ZXColour.Get(roomData.BorderColour);
 
         StartCoroutine(DrawScreen(roomRenderer, roomData));
         StartCoroutine(LoseAir(roomData));
