@@ -18,6 +18,7 @@ public class RoomData
     public Dictionary<int, BlockData> Blocks { get; private set; }
 
     public byte[] ConveyorShape { get; set; }
+    public ConveyorDirection ConveyorDirection { get; set; }
 
     public List<RoomKey> RoomKeys { get; private set; }
 

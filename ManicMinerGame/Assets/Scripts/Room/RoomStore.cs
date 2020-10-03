@@ -119,7 +119,9 @@ public class RoomStore : MonoBehaviour
 
         importer.Read(); // always 0 ???
 
-        importer.ReadBytes(4); // conveyor belt
+        //importer.ReadBytes(4); // (623-626) conveyor belt
+        data.ConveyorDirection = (ConveyorDirection)importer.Read();
+        importer.ReadBytes(3);
 
         importer.Read(); // border color
 

@@ -62,11 +62,67 @@ public class GameController : MonoBehaviour
         StartCoroutine(LoseAir(roomData));
         StartCoroutine(MoveMinerWilly(minerWilly));
         StartCoroutine(CycleColours(roomData.RoomKeys));
+        StartCoroutine(AnimateConveyor(roomData));
 
         if ((roomId >= 0 && roomId <= 6) || roomId==9 || roomId==15)
         {
             StartCoroutine(BidirectionalSprites());
         }
+    }
+
+    IEnumerator AnimateConveyor(RoomData roomData)
+    {
+        //throw new NotImplementedException();
+        //yield return null;
+
+        float speed = 0.1f;
+
+        while (!gameOver)
+        {
+            byte[] tmp = roomData.ConveyorShape;
+
+            if(roomData.ConveyorDirection==ConveyorDirection.Left)
+            {
+                tmp[0] = RotateLeft(tmp[0]);
+                tmp[1] = RotateRight(tmp[1]);
+                tmp[2] = RotateLeft(tmp[2]);
+                tmp[3] = RotateRight(tmp[3]);
+            }
+            else
+            if (roomData.ConveyorDirection == ConveyorDirection.Right)
+            {
+                tmp[0] = RotateRight(tmp[0]);
+                tmp[1] = RotateLeft(tmp[1]);
+                tmp[2] = RotateRight(tmp[2]);
+                tmp[3] = RotateLeft(tmp[3]);
+            }
+
+            roomData.ConveyorShape = tmp;
+
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    private byte RotateRight(byte v)
+    {
+        //throw new NotImplementedException();
+
+        byte tmp = (byte)(v&1);
+        v = (byte)(v >> 1);
+
+        tmp = (byte)(tmp << 7);
+        return (byte)(v|tmp);
+    }
+
+    private byte RotateLeft(byte v)
+    {
+        //throw new NotImplementedException();
+
+        byte tmp = (byte)(v & 0x80);
+        v = (byte)(v << 1);
+
+        tmp = (byte)(tmp >> 7);
+        return (byte)(v | tmp);
     }
 
     private IEnumerator CycleColours(List<RoomKey> roomKeys)
