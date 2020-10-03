@@ -18,6 +18,8 @@ public class RoomData
 
     public List<RoomKey> RoomKeys { get; private set; }
 
+    public List<GuardianHorizontal> HorizontalGuardians { get; private set; }
+
     public CellPoint StartPoint { get; set; }
 
     public Portal Portal {get; set;}
@@ -26,6 +28,10 @@ public class RoomData
 
     //public int AirSupply { get; set; }
     public AirSupply AirSupply { get; set; }
+
+    public List<byte[]> SpecialGraphics { get; set; }
+
+    public List<byte[]> GuardianGraphics { get; set; }
 
     public RoomData()
     {
@@ -36,6 +42,11 @@ public class RoomData
         _attrs = new int[32 * 16];
         Blocks = new Dictionary<int, byte[]>();
         RoomKeys = new List<RoomKey>();
+
+        HorizontalGuardians = new List<GuardianHorizontal>();
+
+        SpecialGraphics = new List<byte[]>();
+        GuardianGraphics = new List<byte[]>();
     }
 
     public void SetAttr(int x, int y, int attr)

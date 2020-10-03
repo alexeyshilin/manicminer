@@ -20,6 +20,8 @@ public class GameController : MonoBehaviour
     private RoomData roomData;
     private bool gameOver;
 
+    List<Mob> mobs = new List<Mob>();
+
     [Tooltip("The room number (0-19)")]
     public int roomId; // 0-19
 
@@ -38,8 +40,15 @@ public class GameController : MonoBehaviour
         //RoomData data = store.Rooms[roomId];
         roomData = store.Rooms[roomId];
 
+        roomData.HorizontalGuardians.ForEach(g=>mobs.Add(new Mob(g)));
+
         StartCoroutine(DrawScreen(roomRenderer, roomData));
         StartCoroutine(LoseAir(roomData));
+
+        if((roomId >= 0 && roomId <= 6) || roomId==9 || roomId==15)
+        {
+            StartCoroutine(BidirectionalSprites());
+        }
     }
 
     IEnumerator DrawScreen(RoomRenderer renderer, RoomData data)
@@ -47,7 +56,8 @@ public class GameController : MonoBehaviour
         while(!gameOver)
         {
             string scoreInfo = string.Format(ScoreFormat, hiScore, score);
-            renderer.DrawScreen(data, scoreInfo);
+            //renderer.DrawScreen(data, scoreInfo);
+            renderer.DrawScreen(data, mobs, scoreInfo);
             yield return null;
         }
     }
@@ -67,6 +77,55 @@ public class GameController : MonoBehaviour
                 data.AirSupply.Tip = 255;
 
                 gameOver = !(data.AirSupply.Length >= 0);
+            }
+        }
+    }
+
+    private IEnumerator BidirectionalSprites()
+    {
+        //yield return null;
+
+        foreach(var m in mobs)
+        {
+            m.FrameDirection = m.Frame < 4 ? 1 : -1;
+        }
+
+        while (!gameOver)
+        {
+            yield return new WaitForSeconds(0.1f); // 0.25f 0.125f 0.1f
+
+            foreach (var m in mobs)
+            {
+                m.Frame += m.FrameDirection;
+
+                // left to right
+                if (m.FrameDirection>0 && m.Frame>3)
+                {
+                    m.Frame = 0;
+                    m.X += m.FrameDirection;
+
+                    // end?
+                    if (m.X>m.Right)
+                    {
+                        m.X = m.Right;
+                        m.FrameDirection *= -1;
+                        m.Frame = 7;
+                    }
+                }
+
+                // right to left
+                if (m.FrameDirection <0 && m.Frame < 4)
+                {
+                    m.Frame = 7;
+                    m.X += m.FrameDirection;
+
+                    if (m.X < m.Left)
+                    {
+                        m.X = m.Left;
+                        m.FrameDirection *= -1;
+                        m.Frame = 0;
+                    }
+                }
             }
         }
     }

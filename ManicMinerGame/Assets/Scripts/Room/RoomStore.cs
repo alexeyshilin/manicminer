@@ -24,7 +24,7 @@ public class RoomStore : MonoBehaviour
             {
                 importer.Seek(offset);
 
-                ImportRoom(importer);
+                ImportRoom(importer, IsSpecialRoom(i));
 
                 offset += 1024;
             }
@@ -33,7 +33,12 @@ public class RoomStore : MonoBehaviour
         IsReady = true;
     }
 
-    void ImportRoom(SnapshotImporter importer)
+    private bool IsSpecialRoom(int id)
+    {
+        return (id >= 0 && id <= 2) || id == 4;
+    }
+
+    void ImportRoom(SnapshotImporter importer, bool hasSpecialGraphics)
     {
         //throw new NotImplementedException();
 
@@ -50,21 +55,21 @@ public class RoomStore : MonoBehaviour
         */
 
         byte[] buf = importer.ReadBytes(512);
-        int i = 0;
+        int ii = 0;
 
         for (int y = 0; y < 16; y++)
         {
             for (int x = 0; x < 32; x++)
             {
                 //data.SetAttr(x, y, buf[i]);
-                data.Attributes[i] = buf[i];
-                i++;
+                data.Attributes[ii] = buf[ii];
+                ii++;
             }
         }
 
         data.RoomName = importer.ReadString(32);
 
-        for(i=0; i<8; i++)
+        for(int i=0; i<8; i++)
         {
             byte attr = importer.Read();
 
@@ -147,6 +152,72 @@ public class RoomStore : MonoBehaviour
         byte airPixel = importer.Read();
 
         data.AirSupply = new AirSupply() { Length = airSize, Tip = airPixel };
+
+        // GUARDIANS
+        // horizontal guardians(offset 702-732)
+        for(int i=0; i<4; i++)
+        {
+            // todo: check black square in room 1
+            GuardianHorizontal gh = new GuardianHorizontal();
+            gh.Attribute = importer.Read();
+            var pos_tmp = importer.ReadShort();
+            gh.StartX = pos_tmp.GetX();
+            gh.StartY = pos_tmp.GetY();
+            //gh.StartPoint = new CellPoint(pos_tmp.GetX(), pos_tmp.GetY());
+            importer.Read(); // ignore
+            gh.StartFrame = importer.Read();
+            gh.Left = importer.Read() & 0x1f;
+            gh.Right = importer.Read() & 0x1f;
+
+            if (gh.Attribute != 255)
+            {
+                data.HorizontalGuardians.Add(gh);
+            }
+        }
+
+        importer.ReadBytes(3); // offset 730 - 255, 731-0, 732-0
+
+        if (hasSpecialGraphics)
+        {
+            importer.ReadBytes(3); // ignore offset 733, 734, 735
+
+            // SPECIAL GRAPHICS (offset 736-767)
+            byte[] specialGraphic = importer.ReadBytes(32);
+            data.SpecialGraphics.Add(specialGraphic);
+            // /SPECIAL GRAPHICS
+        }
+        else
+        {
+            // vertical guardians(offset 702-732)
+            for (int i = 0; i < 4; i++)
+            {
+                GuardianHorizontal gh = new GuardianHorizontal();
+                gh.Attribute = importer.Read();
+                var pos_tmp = importer.ReadShort();
+                gh.StartX = pos_tmp.GetX();
+                gh.StartY = pos_tmp.GetY();
+                //gh.StartPoint = new CellPoint(pos_tmp.GetX(), pos_tmp.GetY());
+                importer.Read(); // ignore
+                gh.StartFrame = importer.Read();
+                gh.Left = importer.Read() & 0x1f;
+                gh.Right = importer.Read() & 0x1f;
+
+                if (gh.Attribute != 255)
+                {
+                    //data.VerticalGuardians.Add(gh);
+                }
+            }
+        }
+        // /GUARDIANS
+
+        // GUARDIAN GRAPHICS (offset 768-1023)
+        for (int i=0; i<8; i++)
+        {
+            byte[] shape = importer.ReadBytes(32);
+            data.GuardianGraphics.Add(shape);
+        }
+        // /GUARDIAN GRAPHICS
+
 
         _rooms.Add(data);
     }

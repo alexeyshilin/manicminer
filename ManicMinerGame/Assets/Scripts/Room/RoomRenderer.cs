@@ -1,6 +1,6 @@
 ﻿//using System;
 using System.Collections;
-//using System.Collections.Generic;
+using System.Collections.Generic;
 //using System.Linq;
 //using System.Text;
 //using System.Threading.Tasks;
@@ -74,8 +74,9 @@ public class RoomRenderer : MonoBehaviour
 
         DrawItems(data); // keys
 
-        DrawPortal(data);
+        DrawHorizontalGuardians(data);
 
+        DrawPortal(data);
 
         /*
         GameObject start = new GameObject("Miner Willy Start");
@@ -115,6 +116,19 @@ public class RoomRenderer : MonoBehaviour
         //////////////////////////////////////
         //yield return null;
         //}
+    }
+
+    public void DrawScreen(RoomData data, IList<Mob> mobs, string playerScore)
+    {
+        screen.ClearX(7, 0, false);
+        
+        DrawRoom(data);
+        DrawItems(data); // keys
+        DrawHorizontalGuardians(mobs, data);
+        DrawPortal(data);
+        DrawRoomTitle(data);
+        DrawAairSupply(data);
+        DrawScore(playerScore);
     }
 
     private void DrawScore(string playerScore)
@@ -202,6 +216,8 @@ public class RoomRenderer : MonoBehaviour
 
     private void DrawRoom(RoomData data)
     {
+        screen.ColumnOrderSprite();
+
         for (int y = 0; y < 16; y++)
         {
             for (int x = 0; x < 32; x++)
@@ -248,6 +264,38 @@ public class RoomRenderer : MonoBehaviour
         //screen.SetAttribute(data.Portal.X, data.Portal.Y, data.Portal.Attr);
         //screen.DrawSprite(data.Portal.X, data.Portal.Y, 2, 2, data.Portal.Shape);
     }
+
+    private void DrawHorizontalGuardians(RoomData data)
+    {
+        screen.RowOrderSprite();
+
+        foreach (var g in data.HorizontalGuardians)
+        {
+            //byte[] graphic = new byte[32];
+            //for (int i = 0; i < graphic.Length; i++)
+            //    graphic[i] = 255;
+
+            //byte[] graphic = data.SpecialGraphics[0];
+            byte[] graphic = data.GuardianGraphics[0];
+
+            screen.FillAttribute(g.StartX, g.StartY, 2, 2, g.Attribute.GetInk(), g.Attribute.GetPaper());
+            screen.DrawSprite(g.StartX, g.StartY, 2, 2, graphic);
+        }
+    }
+
+    private void DrawHorizontalGuardians(IList<Mob> mobs, RoomData data)
+    {
+        screen.RowOrderSprite();
+
+        foreach (var g in mobs)
+        {
+            byte[] graphic = data.GuardianGraphics[g.Frame];
+
+            screen.FillAttribute(g.X, g.Y, 2, 2, g.Attribute.GetInk(), g.Attribute.GetPaper());
+            screen.DrawSprite(g.X, g.Y, 2, 2, graphic);
+        }
+    }
+
 
     /*
     private IEnumerator LoseAir()

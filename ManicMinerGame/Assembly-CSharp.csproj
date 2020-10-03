@@ -72,6 +72,9 @@
     <Compile Include="Assets\Scripts\Importer\SpriteTexture.cs" />
     <Compile Include="Assets\Scripts\Room\AirSupply.cs" />
     <Compile Include="Assets\Scripts\Room\CellPoint.cs" />
+    <Compile Include="Assets\Scripts\Room\Guardian.cs" />
+    <Compile Include="Assets\Scripts\Room\GuardianHorizontal.cs" />
+    <Compile Include="Assets\Scripts\Room\Mob.cs" />
     <Compile Include="Assets\Scripts\Room\Portal.cs" />
     <Compile Include="Assets\Scripts\Room\RoomData.cs" />
     <Compile Include="Assets\Scripts\Room\RoomKey.cs" />
