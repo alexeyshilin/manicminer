@@ -50,6 +50,7 @@ public class GameController : MonoBehaviour
         else
         {
             roomId = UnityEngine.PlayerPrefs.GetInt("_room");
+            score = UnityEngine.PlayerPrefs.GetInt("_score");
         }
 
         var store = GetComponent<RoomStore>();
@@ -147,6 +148,7 @@ public class GameController : MonoBehaviour
         // move to next cavern
         roomId++;
         UnityEngine.PlayerPrefs.SetInt("_room", roomId);
+        UnityEngine.PlayerPrefs.SetInt("_score", score);
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
 
         //yield return null;
