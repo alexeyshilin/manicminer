@@ -94,7 +94,8 @@ public class RoomStore : MonoBehaviour
             //data.Blocks[attr] = tex.Apply();
 
             byte[] blockData = importer.ReadBytes(8);
-            data.Blocks[attr] = blockData;
+            //data.Blocks[attr] = blockData;
+            data.Blocks[attr] = new BlockData(blockData, (BlockType)i);
 
             // for debug only
             /*

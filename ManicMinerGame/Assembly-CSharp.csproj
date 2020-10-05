@@ -71,6 +71,8 @@
     <Compile Include="Assets\Scripts\Importer\SnapshotImporter.cs" />
     <Compile Include="Assets\Scripts\Importer\SpriteTexture.cs" />
     <Compile Include="Assets\Scripts\Room\AirSupply.cs" />
+    <Compile Include="Assets\Scripts\Room\BlockData.cs" />
+    <Compile Include="Assets\Scripts\Room\BlockType.cs" />
     <Compile Include="Assets\Scripts\Room\CellPoint.cs" />
     <Compile Include="Assets\Scripts\Room\Guardian.cs" />
     <Compile Include="Assets\Scripts\Room\GuardianHorizontal.cs" />

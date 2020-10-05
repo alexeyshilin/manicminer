@@ -42,9 +42,21 @@ public class GameController : MonoBehaviour
         //RoomData data = store.Rooms[roomId];
         roomData = store.Rooms[roomId];
 
+        // miner willy
         minerWilly = new MinerWilly(store.MinerWillySprites, roomData.StartPoint.X, roomData.StartPoint.Y, 4, 0, 0, 7);
 
+        // horizontal guardians
         roomData.HorizontalGuardians.ForEach(g=>mobs.Add(new Mob(g)));
+
+        // conveyor shape
+        foreach (var block in roomData.Blocks.Values)
+        {
+            if (block.Type == BlockType.Conveyor)
+            {
+                roomData.ConveyorShape = block.Shape;
+                break;
+            }
+        }
 
         StartCoroutine(DrawScreen(roomRenderer, roomData));
         StartCoroutine(LoseAir(roomData));

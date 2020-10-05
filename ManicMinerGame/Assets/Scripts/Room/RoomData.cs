@@ -14,7 +14,10 @@ public class RoomData
     public int[] Attributes { get { return _attrs; } }
 
     //public Dictionary<int, Sprite> Blocks { get; private set; }
-    public Dictionary<int, byte[]> Blocks { get; private set; }
+    //public Dictionary<int, byte[]> Blocks { get; private set; }
+    public Dictionary<int, BlockData> Blocks { get; private set; }
+
+    public byte[] ConveyorShape { get; set; }
 
     public List<RoomKey> RoomKeys { get; private set; }
 
@@ -40,7 +43,8 @@ public class RoomData
         //RoomKeys = new List<RoomKey>();
 
         _attrs = new int[32 * 16];
-        Blocks = new Dictionary<int, byte[]>();
+        //Blocks = new Dictionary<int, byte[]>();
+        Blocks = new Dictionary<int, BlockData>();
         RoomKeys = new List<RoomKey>();
 
         HorizontalGuardians = new List<GuardianHorizontal>();
