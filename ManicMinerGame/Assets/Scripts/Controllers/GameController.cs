@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour
 
     private int score = 0;
     private int hiScore = 100;
-    private const string ScoreFormat = "High Score {0:000000}   Score {1:000000}";
+    //private const string ScoreFormat = "High Score {0:000000}   Score {1:000000}";
 
     private RoomData roomData;
     //private bool gameOver;
@@ -297,7 +297,7 @@ public class GameController : MonoBehaviour
     {
         while(state == GameState.Playing || state==GameState.MoveToNextCavern)
         {
-            string scoreInfo = string.Format(ScoreFormat, hiScore, score);
+            //string scoreInfo = string.Format(ScoreFormat, hiScore, score);
             //renderer.DrawScreen(data, scoreInfo);
             //renderer.DrawScreen(data, minerWilly, mobs, scoreInfo);
             renderer.DrawScreen();

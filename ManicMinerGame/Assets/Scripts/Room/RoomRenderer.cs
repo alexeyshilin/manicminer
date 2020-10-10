@@ -109,10 +109,10 @@ public class RoomRenderer : MonoBehaviour
         }
     }
 
-    private void DrawMinerWilly(RoomData data)
-    {
-        throw new NotImplementedException();
-    }
+    //private void DrawMinerWilly(RoomData data)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
     //private void DrawMinerWilly(MinerWilly m, RoomData data)
     //{
