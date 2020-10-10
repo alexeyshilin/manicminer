@@ -24,8 +24,21 @@ public class PortalRenderer : IRenderer
 
     public void Draw()
     {
-        //_screen.ColumnOrderSprite();
+        _screen.ColumnOrderSprite();
         //_screen.RowOrderSprite();
+
+        for (int py = 0; py < 2; py++)
+        {
+            for (int px = 0; px < 2; px++)
+            {
+                _screen.SetAttribute(_data.Portal.X + px, _data.Portal.Y + py, _data.Portal.Attr);
+            }
+        }
+
+        _screen.RowOrderSprite();
+        _screen.DrawSprite(_data.Portal.X, _data.Portal.Y, 2, 2, _data.Portal.Shape);
+
+        _screen.ColumnOrderSprite();
     }
 }
 //}

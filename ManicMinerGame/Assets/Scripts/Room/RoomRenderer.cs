@@ -210,21 +210,21 @@ public class RoomRenderer : MonoBehaviour
     //    // /KEYS
     //}
 
-    private void DrawPortal(RoomData data)
-    {
-        for (int py = 0; py < 2; py++)
-        {
-            for (int px = 0; px < 2; px++)
-            {
-                screen.SetAttribute(data.Portal.X + px, data.Portal.Y + py, data.Portal.Attr);
-            }
-        }
+    //private void DrawPortal(RoomData data)
+    //{
+    //    for (int py = 0; py < 2; py++)
+    //    {
+    //        for (int px = 0; px < 2; px++)
+    //        {
+    //            screen.SetAttribute(data.Portal.X + px, data.Portal.Y + py, data.Portal.Attr);
+    //        }
+    //    }
 
-        screen.RowOrderSprite();
-        screen.DrawSprite(data.Portal.X, data.Portal.Y, 2, 2, data.Portal.Shape);
+    //    screen.RowOrderSprite();
+    //    screen.DrawSprite(data.Portal.X, data.Portal.Y, 2, 2, data.Portal.Shape);
 
-        screen.ColumnOrderSprite();
-    }
+    //    screen.ColumnOrderSprite();
+    //}
 
     //private void DrawRoom(RoomData data)
     //{
