@@ -4,9 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.Room.Renderers
+//namespace Assets.Scripts.Room.Renderers
+//{
+public class AirSupplyRenderer : IRenderer
 {
-    class AirSupplyRenderer
+    private Com.SloanKelly.ZXSpectrum.SpectrumScreen _screen;
+
+    private RoomData _data;
+
+    public AirSupplyRenderer(RoomData data)
     {
+        _data = data;
+    }
+
+    public void Init(Com.SloanKelly.ZXSpectrum.SpectrumScreen screen)
+    {
+        _screen = screen;
+    }
+
+    public void Draw()
+    {
+        //_screen.ColumnOrderSprite();
+        //_screen.RowOrderSprite();
     }
 }
+//}
