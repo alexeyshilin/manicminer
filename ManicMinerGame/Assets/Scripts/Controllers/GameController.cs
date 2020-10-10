@@ -39,6 +39,9 @@ public class GameController : MonoBehaviour
     [Tooltip("The room number (0-19)")]
     public int roomId; // 0-19
 
+    public int Score { get { return score; } }
+    public int HiScore { get { return hiScore; } }
+
     //public RoomData RoomData { get{return roomData;} }
 
     IEnumerator Start()
@@ -85,6 +88,8 @@ public class GameController : MonoBehaviour
 
         mainCamera.backgroundColor = Com.SloanKelly.ZXSpectrum.ZXColour.Get(roomData.BorderColour);
 
+        SetupRenderer(roomRenderer);
+
         StartCoroutine(DrawScreen(roomRenderer, roomData));
         StartCoroutine(LoseAir(roomData));
         if(!isDemoMode) StartCoroutine(MoveMinerWilly(minerWilly, roomData));
@@ -99,6 +104,17 @@ public class GameController : MonoBehaviour
         {
             StartCoroutine(BidirectionalSprites());
         }
+    }
+
+    private void SetupRenderer(RoomRenderer roomRenderer)
+    {
+        var tmp = new List<IRenderer>();
+        tmp.Add(new MinerWillyRenderer(minerWilly, roomData));
+        tmp.Add(new BlockRenderer(roomData));
+        tmp.Add(new HorizontalGuardianRenderer(roomData, mobs));
+        tmp.Add(new RoomNameRenderer(roomData));
+
+        roomRenderer.Init(tmp);
     }
 
     IEnumerator DemoNextScreen()
@@ -279,7 +295,8 @@ public class GameController : MonoBehaviour
         {
             string scoreInfo = string.Format(ScoreFormat, hiScore, score);
             //renderer.DrawScreen(data, scoreInfo);
-            renderer.DrawScreen(data, minerWilly, mobs, scoreInfo);
+            //renderer.DrawScreen(data, minerWilly, mobs, scoreInfo);
+            renderer.DrawScreen();
             yield return null;
         }
     }

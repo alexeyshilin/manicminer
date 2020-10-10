@@ -82,6 +82,11 @@
     <Compile Include="Assets\Scripts\Room\Mob.cs" />
     <Compile Include="Assets\Scripts\Room\MovableObject.cs" />
     <Compile Include="Assets\Scripts\Room\Portal.cs" />
+    <Compile Include="Assets\Scripts\Room\Renderers\BlockRenderer.cs" />
+    <Compile Include="Assets\Scripts\Room\Renderers\HorizontalGuardianRenderer.cs" />
+    <Compile Include="Assets\Scripts\Room\Renderers\IRenderer.cs" />
+    <Compile Include="Assets\Scripts\Room\Renderers\MinerWillyRenderer.cs" />
+    <Compile Include="Assets\Scripts\Room\Renderers\RoomNameRenderer.cs" />
     <Compile Include="Assets\Scripts\Room\RoomData.cs" />
     <Compile Include="Assets\Scripts\Room\RoomKey.cs" />
     <Compile Include="Assets\Scripts\Room\RoomRenderer.cs" />
