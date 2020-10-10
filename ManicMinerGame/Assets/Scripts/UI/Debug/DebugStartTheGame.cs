@@ -17,6 +17,7 @@ public class DebugStartTheGame : MonoBehaviour
         {
             PlayerPrefs.SetInt("_room", 0);
             PlayerPrefs.SetInt("_score", 0);
+            PlayerPrefs.SetInt("_demo", 0);
             UnityEngine.SceneManagement.SceneManager.LoadScene(theGame);
         }
         ));
