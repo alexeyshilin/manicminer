@@ -32,6 +32,8 @@ public class GameController : MonoBehaviour
     private byte[] keyColours = new byte[] { 3, 6, 5, 4 }; // magenta, yellow, cyan, green
     private int currentKeyColour = 0;
 
+    private bool isDemoMode = true;
+
     public Camera mainCamera;
 
     [Tooltip("The room number (0-19)")]
@@ -84,16 +86,34 @@ public class GameController : MonoBehaviour
 
         StartCoroutine(DrawScreen(roomRenderer, roomData));
         StartCoroutine(LoseAir(roomData));
-        StartCoroutine(MoveMinerWilly(minerWilly, roomData));
+        if(!isDemoMode) StartCoroutine(MoveMinerWilly(minerWilly, roomData));
         StartCoroutine(CycleColours(roomData.RoomKeys));
         StartCoroutine(AnimateConveyor(roomData));
         StartCoroutine(CheckPortalCollision(roomData));
         StartCoroutine(EndOfCavernCheck(roomData));
 
+        if (isDemoMode) StartCoroutine(DemoNextScreen());
+
         if ((roomId >= 0 && roomId <= 6) || roomId==9 || roomId==15)
         {
             StartCoroutine(BidirectionalSprites());
         }
+    }
+
+    IEnumerator DemoNextScreen()
+    {
+        //throw new NotImplementedException();
+
+        yield return new WaitForSeconds(5);
+
+        roomId++;
+        if (roomId >= 20)
+            roomId = 0;
+
+        UnityEngine.PlayerPrefs.SetInt("_room", roomId);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+
+        //yield return null;
     }
 
     IEnumerator EndOfCavernCheck(RoomData roomData)
