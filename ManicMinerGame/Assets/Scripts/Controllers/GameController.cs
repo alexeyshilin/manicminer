@@ -27,8 +27,8 @@ public class GameController : MonoBehaviour
     private RoomData roomData;
     //private bool gameOver;
     private GameState state;
-    private MobX minerWilly;
-    private List<MobX> mobs = new List<MobX>();
+    private Mob minerWilly;
+    private List<Mob> mobs = new List<Mob>();
     private byte[] keyColours = new byte[] { 3, 6, 5, 4 }; // magenta, yellow, cyan, green
     private int currentKeyColour = 0;
 
@@ -71,11 +71,11 @@ public class GameController : MonoBehaviour
         roomData = store.Rooms[roomId];
 
         // miner willy
-        minerWilly = new MobX(store.MinerWillySprites, roomData.StartPoint.X, roomData.StartPoint.Y, 4, 0, 0, 7);
+        minerWilly = new Mob(store.MinerWillySprites, roomData.StartPoint.X, roomData.StartPoint.Y, 4, 0, 0, 7);
 
         // horizontal guardians
         //roomData.HorizontalGuardians.ForEach(g=>mobs.Add(new MobX(g)));
-        roomData.HorizontalGuardians.ForEach(g => mobs.Add(new MobX(roomData.GuardianGraphics, g.StartX, g.StartY, g.Left, g.Right, g.StartFrame, g.Attribute)));
+        roomData.HorizontalGuardians.ForEach(g => mobs.Add(new Mob(roomData.GuardianGraphics, g.StartX, g.StartY, g.Left, g.Right, g.StartFrame, g.Attribute)));
 
         // conveyor shape
         foreach (var block in roomData.Blocks.Values)
@@ -331,7 +331,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private IEnumerator MoveMinerWilly(MobX minerWilly, RoomData data)
+    private IEnumerator MoveMinerWilly(Mob minerWilly, RoomData data)
     {
         //throw new NotImplementedException();
         //yield return null;

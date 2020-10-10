@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 //namespace Assets.Scripts.Room
 //{
-public class MobX : MovableObject
+public class Mob : MovableObject
 {
     public List<byte[]> Frames { get; private set; }
 
-    public MobX(List<byte[]> frames, int startX, int startY, int left, int right, int startFrame, byte attr)
+    public Mob(List<byte[]> frames, int startX, int startY, int left, int right, int startFrame, byte attr)
     {
         Attribute = attr;
         Frame = startFrame;

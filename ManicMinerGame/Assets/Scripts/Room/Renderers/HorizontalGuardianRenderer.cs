@@ -11,9 +11,9 @@ public class HorizontalGuardianRenderer : IRenderer
     private Com.SloanKelly.ZXSpectrum.SpectrumScreen _screen;
 
     private RoomData _data;
-    private IList<MobX> _mobs;
+    private IList<Mob> _mobs;
 
-    public HorizontalGuardianRenderer(RoomData data, IList<MobX> mobs)
+    public HorizontalGuardianRenderer(RoomData data, IList<Mob> mobs)
     {
         _data = data;
         _mobs = mobs;

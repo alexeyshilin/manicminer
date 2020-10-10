@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 //{
 public class MinerWillyRenderer : IRenderer
 {
-    private MobX _player;
+    private Mob _player;
     private RoomData _data;
     private Com.SloanKelly.ZXSpectrum.SpectrumScreen _screen;
 
-    public MinerWillyRenderer(MobX player, RoomData data)
+    public MinerWillyRenderer(Mob player, RoomData data)
     {
         _player = player;
         _data = data;
