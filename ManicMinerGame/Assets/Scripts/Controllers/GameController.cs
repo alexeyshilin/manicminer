@@ -109,10 +109,14 @@ public class GameController : MonoBehaviour
     private void SetupRenderer(RoomRenderer roomRenderer)
     {
         var tmp = new List<IRenderer>();
-        tmp.Add(new MinerWillyRenderer(minerWilly, roomData));
-        tmp.Add(new BlockRenderer(roomData));
-        tmp.Add(new HorizontalGuardianRenderer(roomData, mobs));
-        tmp.Add(new RoomNameRenderer(roomData));
+        tmp.Add(new MinerWillyRenderer(minerWilly, roomData)); // DrawMinerWilly
+        tmp.Add(new BlockRenderer(roomData)); // DrawRoom
+        // DrawItems
+        tmp.Add(new HorizontalGuardianRenderer(roomData, mobs)); // DrawHorizontalGuardians
+        // DrawPortal
+        tmp.Add(new RoomNameRenderer(roomData)); // DrawRoomTitle
+        // DrawAairSupply
+        // DrawScore
 
         roomRenderer.Init(tmp);
     }
