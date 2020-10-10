@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour
     private byte[] keyColours = new byte[] { 3, 6, 5, 4 }; // magenta, yellow, cyan, green
     private int currentKeyColour = 0;
 
-    private bool isDemoMode = true;
+    private bool isDemoMode = false;
 
     public Camera mainCamera;
 
@@ -53,6 +53,7 @@ public class GameController : MonoBehaviour
         {
             roomId = UnityEngine.PlayerPrefs.GetInt("_room");
             score = UnityEngine.PlayerPrefs.GetInt("_score");
+            isDemoMode = UnityEngine.PlayerPrefs.GetInt("_demo") > 0 ? true : false;
         }
 
         var store = GetComponent<RoomStore>();

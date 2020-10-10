@@ -86,6 +86,7 @@
     <Compile Include="Assets\Scripts\Room\RoomKey.cs" />
     <Compile Include="Assets\Scripts\Room\RoomRenderer.cs" />
     <Compile Include="Assets\Scripts\Room\RoomStore.cs" />
+    <Compile Include="Assets\Scripts\UI\Debug\DebugDemoGame.cs" />
     <Compile Include="Assets\Scripts\UI\Debug\DebugStartTheGame.cs" />
     <Compile Include="Assets\Scripts\ZXSpectrum\BoolArrayExtensions.cs" />
     <Compile Include="Assets\Scripts\ZXSpectrum\CharScreen.cs" />
