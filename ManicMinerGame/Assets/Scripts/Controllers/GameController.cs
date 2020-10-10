@@ -116,7 +116,7 @@ public class GameController : MonoBehaviour
         tmp.Add(new PortalRenderer(roomData)); // DrawPortal
         tmp.Add(new RoomNameRenderer(roomData)); // DrawRoomTitle
         tmp.Add(new AirSupplyRenderer(roomData)); // DrawAairSupply
-        // DrawScore
+        tmp.Add(new PlayerScoreRenderer(this)); // DrawScore
 
         roomRenderer.Init(tmp);
     }

@@ -134,18 +134,18 @@ public class RoomRenderer : MonoBehaviour
     //    screen.DrawSprite(m.X, m.Y, 2, 2, graphic);
     //}
 
-    private void DrawScore(string playerScore)
-    {
-        // Score
-        for (int x = 0; x < 32; x++)
-        {
-            screen.SetAttribute(x, 19, 6, 0);
-        }
+    //private void DrawScore(string playerScore)
+    //{
+    //    // Score
+    //    for (int x = 0; x < 32; x++)
+    //    {
+    //        screen.SetAttribute(x, 19, 6, 0);
+    //    }
 
-        //screen.PrintMessage(0, 19, string.Format(ScoreFormat, hiScore, score));
-        screen.PrintMessage(0, 19, playerScore);
-        // /Score
-    }
+    //    //screen.PrintMessage(0, 19, string.Format(ScoreFormat, hiScore, score));
+    //    screen.PrintMessage(0, 19, playerScore);
+    //    // /Score
+    //}
 
     //private void DrawAairSupply(RoomData data)
     //{
