@@ -15,6 +15,7 @@ public class RoomData
 
     //public Dictionary<int, Sprite> Blocks { get; private set; }
     //public Dictionary<int, byte[]> Blocks { get; private set; }
+    //public Dictionary<int, byte[]> Blocks { get; private set; }
     public Dictionary<int, BlockData> Blocks { get; private set; }
 
     public byte[] ConveyorShape { get; set; }

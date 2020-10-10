@@ -44,8 +44,8 @@ public class GameController : MonoBehaviour
         //UnityEngine.PlayerPrefs.SetInt("_room", 0);
         if (roomId < 0)
         {
-            //roomId = 0;
-            roomId = UnityEngine.PlayerPrefs.GetInt("_room"); // check PlayerPrefs._room
+            roomId = 0;
+            //roomId = UnityEngine.PlayerPrefs.GetInt("_room"); // check PlayerPrefs._room
         }
         else
         {
@@ -71,9 +71,9 @@ public class GameController : MonoBehaviour
         roomData.HorizontalGuardians.ForEach(g=>mobs.Add(new Mob(g)));
 
         // conveyor shape
-        foreach (var block in roomData.Blocks.Values)
+        foreach(var block in roomData.Blocks.Values)
         {
-            if (block.Type == BlockType.Conveyor)
+            if(block.Type==BlockType.Conveyor)
             {
                 roomData.ConveyorShape = block.Shape;
                 break;

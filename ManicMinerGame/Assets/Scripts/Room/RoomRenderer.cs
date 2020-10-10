@@ -296,7 +296,7 @@ public class RoomRenderer : MonoBehaviour
                     screen.SetAttribute(x, y, ink, paper, bright, flashing);
                     //screen.DrawSprite(x, y, 1, 1, data.Blocks[attr]);
 
-                    if (data.Blocks[attr].Type == BlockType.Conveyor)
+                    if(data.Blocks[attr].Type == BlockType.Conveyor)
                     {
                         screen.DrawSprite(x, y, 1, 1, data.ConveyorShape);
                     }
