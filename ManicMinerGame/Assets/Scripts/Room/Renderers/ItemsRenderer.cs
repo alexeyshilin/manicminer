@@ -24,8 +24,27 @@ public class ItemsRenderer : IRenderer
 
     public void Draw()
     {
-        //_screen.ColumnOrderSprite();
+        _screen.ColumnOrderSprite();
         //_screen.RowOrderSprite();
+
+        // KEYS
+        byte[] keyShape = new byte[] { 255, 255, 255, 255, 255, 255, 255, 255 };
+        foreach (var key in _data.RoomKeys)
+        {
+            if (key.Attr == 255) continue;
+
+            int attr = _data.Attributes[key.Position.Y * 32 + key.Position.X];
+            attr &= 0xF8; // 11111000
+            attr |= key.Attr;
+
+            //screen.SetAttribute(key.Position.X, key.Position.Y, key.Attr, 0, true, false);
+            Com.SloanKelly.ZXSpectrum.ZXAttribute attribute = new Com.SloanKelly.ZXSpectrum.ZXAttribute((byte)attr);
+            _screen.SetAttribute(key.Position.X, key.Position.Y, attribute);
+
+            //screen.DrawSprite(key.Position.X, key.Position.Y, 1, 1, keyShape);
+            _screen.DrawSprite(key.Position.X, key.Position.Y, 1, 1, _data.KeyShape);
+        }
+        // /KEYS
     }
 }
 //}

@@ -111,7 +111,7 @@ public class GameController : MonoBehaviour
         var tmp = new List<IRenderer>();
         tmp.Add(new MinerWillyRenderer(minerWilly, roomData)); // DrawMinerWilly
         tmp.Add(new BlockRenderer(roomData)); // DrawRoom
-        // DrawItems
+        tmp.Add(new ItemsRenderer(roomData)); // DrawItems
         tmp.Add(new HorizontalGuardianRenderer(roomData, mobs)); // DrawHorizontalGuardians
         // DrawPortal
         tmp.Add(new RoomNameRenderer(roomData)); // DrawRoomTitle
