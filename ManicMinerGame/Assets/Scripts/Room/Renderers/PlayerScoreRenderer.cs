@@ -12,9 +12,9 @@ public class PlayerScoreRenderer : IRenderer
 
     private Com.SloanKelly.ZXSpectrum.SpectrumScreen _screen;
 
-    private GameController _data;
+    private IScoreInformation _data;
 
-    public PlayerScoreRenderer(GameController data)
+    public PlayerScoreRenderer(IScoreInformation data)
     {
         _data = data;
     }

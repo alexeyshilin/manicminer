@@ -11,7 +11,7 @@ using UnityEngine;
 [RequireComponent(typeof(RoomStore))]
 [RequireComponent(typeof(RoomRenderer))]
 [RequireComponent(typeof(Com.SloanKelly.ZXSpectrum.SpectrumScreen))]
-public class GameController : MonoBehaviour
+public class GameController : MonoBehaviour, IScoreInformation
 {
     enum GameState
     {
