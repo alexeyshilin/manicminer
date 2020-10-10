@@ -147,35 +147,35 @@ public class RoomRenderer : MonoBehaviour
         // /Score
     }
 
-    private void DrawAairSupply(RoomData data)
-    {
-        // air supply
-        for (int x = 0; x < 10; x++)
-        {
-            screen.SetAttribute(x, 17, 7, 2);
-        }
+    //private void DrawAairSupply(RoomData data)
+    //{
+    //    // air supply
+    //    for (int x = 0; x < 10; x++)
+    //    {
+    //        screen.SetAttribute(x, 17, 7, 2);
+    //    }
 
-        for (int x = 10; x < 32; x++)
-        {
-            screen.SetAttribute(x, 17, 7, 4);
-        }
+    //    for (int x = 10; x < 32; x++)
+    //    {
+    //        screen.SetAttribute(x, 17, 7, 4);
+    //    }
 
 
-        byte[] airBlock = { 0, 0, 255, 255, 255, 255, 0, 0 };
+    //    byte[] airBlock = { 0, 0, 255, 255, 255, 255, 0, 0 };
 
-        var airSupplyLength = data.AirSupply.Length;
-        var airHead = data.AirSupply.Tip;
+    //    var airSupplyLength = data.AirSupply.Length;
+    //    var airHead = data.AirSupply.Tip;
 
-        for (int x = 0; x < airSupplyLength; x++)
-        {
-            screen.DrawSprite(x + 4, 17, 1, 1, airBlock);
-        }
+    //    for (int x = 0; x < airSupplyLength; x++)
+    //    {
+    //        screen.DrawSprite(x + 4, 17, 1, 1, airBlock);
+    //    }
 
-        byte[] airTipBlock = new byte[] { 0, 0, (byte)airHead, (byte)airHead, (byte)airHead, (byte)airHead, 0, 0 };
-        screen.DrawSprite(4 + airSupplyLength, 17, 1, 1, airTipBlock);
+    //    byte[] airTipBlock = new byte[] { 0, 0, (byte)airHead, (byte)airHead, (byte)airHead, (byte)airHead, 0, 0 };
+    //    screen.DrawSprite(4 + airSupplyLength, 17, 1, 1, airTipBlock);
 
-        screen.PrintMessage(0, 17, "AIR");
-    }
+    //    screen.PrintMessage(0, 17, "AIR");
+    //}
 
     //private void DrawRoomTitle(RoomData data)
     //{

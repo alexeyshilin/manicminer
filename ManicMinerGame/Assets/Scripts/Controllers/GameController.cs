@@ -115,7 +115,7 @@ public class GameController : MonoBehaviour
         tmp.Add(new HorizontalGuardianRenderer(roomData, mobs)); // DrawHorizontalGuardians
         tmp.Add(new PortalRenderer(roomData)); // DrawPortal
         tmp.Add(new RoomNameRenderer(roomData)); // DrawRoomTitle
-        // DrawAairSupply
+        tmp.Add(new AirSupplyRenderer(roomData)); // DrawAairSupply
         // DrawScore
 
         roomRenderer.Init(tmp);
