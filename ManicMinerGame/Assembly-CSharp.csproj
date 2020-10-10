@@ -78,7 +78,6 @@
     <Compile Include="Assets\Scripts\Room\ConveyorDirection.cs" />
     <Compile Include="Assets\Scripts\Room\Guardian.cs" />
     <Compile Include="Assets\Scripts\Room\GuardianHorizontal.cs" />
-    <Compile Include="Assets\Scripts\Room\Mob.cs" />
     <Compile Include="Assets\Scripts\Room\MobX.cs" />
     <Compile Include="Assets\Scripts\Room\MovableObject.cs" />
     <Compile Include="Assets\Scripts\Room\Portal.cs" />
