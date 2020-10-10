@@ -89,7 +89,7 @@ public class RoomRenderer : MonoBehaviour
         DrawMinerWilly(minerWilly, data);
         DrawRoom(data);
         DrawItems(data); // keys
-        DrawHorizontalGuardians(mobs, data);
+        DrawHorizontalGuardians(mobs, data.GuardianGraphics);
         DrawPortal(data);
         DrawRoomTitle(data);
         DrawAairSupply(data);
@@ -304,7 +304,7 @@ public class RoomRenderer : MonoBehaviour
     //    }
     //}
 
-    //private void DrawHorizontalGuardians(IList<Mob> mobs, RoomData data)
+    //private void DrawHorizontalGuardians(IList<Mob> mobs, List<byte[]> frames)
     //{
     //    screen.RowOrderSprite();
 
@@ -312,7 +312,7 @@ public class RoomRenderer : MonoBehaviour
     //    {
     //        if (g.Attribute == 0) continue;
 
-    //        byte[] graphic = data.GuardianGraphics[g.Frame];
+    //        byte[] graphic = frames[g.Frame];
 
     //        screen.FillAttribute(g.X, g.Y, 2, 2, g.Attribute.GetInk(), g.Attribute.GetPaper());
     //        screen.DrawSprite(g.X, g.Y, 2, 2, graphic);
