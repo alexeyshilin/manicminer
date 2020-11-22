@@ -27,6 +27,9 @@ public class RoomRenderer : MonoBehaviour
 
     public Transform target;
 
+    [Tooltip("Clear the screen before each redraw")]
+    public bool clearScreen = true;
+
     [Tooltip("The material that has the pixel perfect check box")]
     public Material pixelPerfect;
 
@@ -99,7 +102,7 @@ public class RoomRenderer : MonoBehaviour
 
     public void DrawScreen()
     {
-        screen.ClearX(7, 0, false);
+        if(clearScreen) screen.ClearX(7, 0, false);
 
         //if (renderers == null) return;
 

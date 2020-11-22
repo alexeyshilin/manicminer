@@ -103,7 +103,7 @@ namespace Com.SloanKelly.ZXSpectrum
 			x *= 8;
 			y *= 8;
 
-			_pixels.Set (x, y, row, val);
+			_pixels.Set(x, y, row, val, _drawMode==DrawMode.Overwrite);
 		}
 
         public void PokePP(int x, int y, int row, int rowOffset, byte val)
@@ -118,7 +118,7 @@ namespace Com.SloanKelly.ZXSpectrum
 
             y -= rowOffset;
 
-            _pixels.SetPP(x, y, row, val);
+            _pixels.Set(x, y, row, val, _drawMode == DrawMode.Overwrite);
         }
 
         /// <summary>

@@ -28,6 +28,8 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
         var store = GetComponent<RoomStore>();
         var roomRenderer = GetComponent<RoomRenderer>();
 
+        roomRenderer.clearScreen = false;
+
         PlayerPrefs.SetInt("_room", 0);
         var roomId = PlayerPrefs.GetInt("_room");
 
@@ -65,7 +67,7 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
 
         while(isRunning)
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.01f);
 
             boot.RowOffset += 2;
             if(boot.RowOffset >= 8)

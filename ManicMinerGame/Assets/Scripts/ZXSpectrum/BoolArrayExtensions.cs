@@ -16,7 +16,7 @@ namespace Com.SloanKelly.ZXSpectrum
 		/// <param name="y">The y coordinate.</param>
 		/// <param name="row">Row.</param>
 		/// <param name="b">The blue component.</param>
-		public static void Set(this bool[,] arr, int x, int y, int row, byte b)
+		public static void Set(this bool[,] arr, int x, int y, int row, byte b, bool overwrite)
 		{
 			y += (7 - row);
 
@@ -33,7 +33,10 @@ namespace Com.SloanKelly.ZXSpectrum
                     {
                         UnityEngine.Debug.Log(x + " " + (7 - i) + " " + i + " " + y);
                     }
-				}
+				}else if(overwrite)
+                {
+                    arr[x + (7 - i), y] = false;
+                }
 			}
 		}
 
