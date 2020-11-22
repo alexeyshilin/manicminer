@@ -86,7 +86,7 @@ public class RoomRenderer : MonoBehaviour
 
     public void FloodFill(int paperColour)
     {
-        screen.FillAttribute(0, 0, 32, 15, 7, paperColour);
+        screen.FillAttribute(0, 0, 32, 16, 7, paperColour);
     }
 
     /*

@@ -115,7 +115,8 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
             gameOverText.Ink = inks;
             gameOverText.Active = true;
 
-            yield return null;
+            //yield return null;
+            yield return new WaitForSeconds(0.01f);
 
             time += Time.deltaTime;
         }
