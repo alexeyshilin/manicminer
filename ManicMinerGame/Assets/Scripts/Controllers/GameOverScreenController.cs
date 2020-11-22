@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(RoomRenderer))]
 [RequireComponent(typeof(RoomStore))]
@@ -19,6 +20,8 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
     private StaticObject boot;
     private StaticObject plynth;
     private GameOverTextRenderer gameOverText;
+
+    public string mainMenuScene = "MainMenu";
 
     //public int Score => throw new NotImplementedException();
     public int Score
@@ -118,8 +121,10 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
             //yield return null;
             yield return new WaitForSeconds(0.01f);
 
-            time += Time.deltaTime;
+            time -= Time.deltaTime;
         }
+
+        SceneManager.LoadScene(mainMenuScene);
     }
 
     private IEnumerator DropTheBoot(StaticObject boot)

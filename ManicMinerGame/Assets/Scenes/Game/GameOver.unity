@@ -265,6 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1000109412}
+  clearScreen: 1
   pixelPerfect: {fileID: 2100000, guid: e20efb3d0d1884d43ade20c137b444a5, type: 2}
   minerStartTemp: {fileID: 21300000, guid: e69d3d571df0cf847a0f49c3b9270180, type: 3}
   roomKeyTemp: {fileID: 21300000, guid: dcabc8e154060284294e131d7bf66cf8, type: 3}
@@ -307,6 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4bdbf0365a5134f9743027b288a324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainMenuScene: Debug Main Menu
 --- !u!1 &688407286
 GameObject:
   m_ObjectHideFlags: 0
