@@ -28,6 +28,7 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
         var store = GetComponent<RoomStore>();
         var roomRenderer = GetComponent<RoomRenderer>();
 
+        PlayerPrefs.SetInt("_room", 0);
         var roomId = PlayerPrefs.GetInt("_room");
 
         while (!store.IsReady)
@@ -35,12 +36,13 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
             yield return null;
         }
 
-        boot = new StaticObject(store.Rooms[2].SpecialGraphics[0]);
+        boot = new StaticObject(store.Rooms[2].SpecialGraphics[0], 15, 0);
         plynth = new StaticObject(store.Rooms[1].SpecialGraphics[0], 15, 14);
 
         var roomData = store.Rooms[0]; // TODO: game over room
 
         Mob minerWilly = new Mob(store.MinerWillySprites, 15, 12, 4, 0, 0, 7);
+        minerWilly.Frame = 2;
 
         var renderers = new List<IRenderer>();
 
