@@ -5,14 +5,28 @@ using UnityEngine;
 
 [RequireComponent(typeof(RoomRenderer))]
 [RequireComponent(typeof(RoomStore))]
-public class GameOverScreenController : MonoBehaviour
+public class GameOverScreenController : MonoBehaviour, IScoreInformation
 {
     private bool isRunning = true;
+
+    //public int Score => throw new NotImplementedException();
+    public int Score
+    {
+        get; private set;
+    }
+
+    //public int HiScore => throw new NotImplementedException();
+    public int HiScore
+    {
+        get; private set;
+    }
 
     IEnumerator Start()
     {
         var store = GetComponent<RoomStore>();
         var roomRenderer = GetComponent<RoomRenderer>();
+
+        var roomId = PlayerPrefs.GetInt("_room");
 
         while (!store.IsReady)
         {
@@ -25,7 +39,10 @@ public class GameOverScreenController : MonoBehaviour
 
         var renderers = new List<IRenderer>();
 
-        renderers.Add(new MinerWillyRenderer(minerWilly, store.Rooms[0]));
+        renderers.Add(new MinerWillyRenderer(minerWilly, store.Rooms[roomId]));
+        renderers.Add(new AirSupplyRenderer(roomData));
+        renderers.Add(new RoomNameRenderer(roomData));
+        renderers.Add(new PlayerScoreRenderer(this));
 
         roomRenderer.Init(renderers);
 
