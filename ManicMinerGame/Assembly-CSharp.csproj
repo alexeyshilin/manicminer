@@ -84,6 +84,7 @@
     <Compile Include="Assets\Scripts\Room\Portal.cs" />
     <Compile Include="Assets\Scripts\Room\Renderers\AirSupplyRenderer.cs" />
     <Compile Include="Assets\Scripts\Room\Renderers\BlockRenderer.cs" />
+    <Compile Include="Assets\Scripts\Room\Renderers\GameOverTextRenderer.cs" />
     <Compile Include="Assets\Scripts\Room\Renderers\HorizontalGuardianRenderer.cs" />
     <Compile Include="Assets\Scripts\Room\Renderers\IRenderer.cs" />
     <Compile Include="Assets\Scripts\Room\Renderers\ItemsRenderer.cs" />

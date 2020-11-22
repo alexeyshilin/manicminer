@@ -18,6 +18,7 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
     private GameOverState gameOverState = GameOverState.BootDrop;
     private StaticObject boot;
     private StaticObject plynth;
+    private GameOverTextRenderer gameOverText;
 
     //public int Score => throw new NotImplementedException();
     public int Score
@@ -46,6 +47,8 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
             yield return null;
         }
 
+        gameOverText = new GameOverTextRenderer() { X = 10, Y = 6 };
+
         boot = new StaticObject(store.Rooms[2].SpecialGraphics[0], 15, 0);
         plynth = new StaticObject(store.Rooms[1].SpecialGraphics[0], 15, 14);
 
@@ -62,6 +65,7 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
         renderers.Add(new AirSupplyRenderer(roomData));
         renderers.Add(new RoomNameRenderer(roomData));
         renderers.Add(new PlayerScoreRenderer(this));
+        renderers.Add(gameOverText);
 
         roomRenderer.Init(renderers);
 
@@ -85,6 +89,36 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
         }
 
         roomRenderer.FloodFill(0);
+        StartCoroutine(FlashGameOverText());
+    }
+
+    private IEnumerator FlashGameOverText()
+    {
+        //throw new NotImplementedException();
+
+        var ink = 1;
+        var inks = new int[GameOverTextRenderer.GameOver.Length];
+
+        float time = 3f;
+
+        while(time>0)
+        {
+            for(int i=0; i<inks.Length; i++)
+            {
+                inks[i] = ink++;
+                if(ink > 7)
+                {
+                    ink = 1;
+                }
+            }
+
+            gameOverText.Ink = inks;
+            gameOverText.Active = true;
+
+            yield return null;
+
+            time += Time.deltaTime;
+        }
     }
 
     private IEnumerator DropTheBoot(StaticObject boot)
