@@ -1,4 +1,5 @@
 ﻿//using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -57,8 +58,26 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
 
         roomRenderer.Init(renderers);
 
+        StartCoroutine(FlashTheScreen(roomRenderer));
         StartCoroutine(DropTheBoot(boot));
         StartCoroutine(DrawTheScreen(roomRenderer));
+    }
+
+    IEnumerator FlashTheScreen(RoomRenderer roomRenderer)
+    {
+        //throw new NotImplementedException();
+
+        int paper = 1;
+
+        while (isRunning)
+        {
+            yield return new WaitForSeconds(0.01f);
+            roomRenderer.FloodFill(paper);
+            paper++;
+            if (paper == 8) paper = 1;
+        }
+
+        roomRenderer.FloodFill(0);
     }
 
     private IEnumerator DropTheBoot(StaticObject boot)

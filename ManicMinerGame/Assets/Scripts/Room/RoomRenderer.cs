@@ -84,6 +84,11 @@ public class RoomRenderer : MonoBehaviour
         this.renderers = tmp;
     }
 
+    public void FloodFill(int paperColour)
+    {
+        screen.FillAttribute(0, 0, 32, 15, 7, paperColour);
+    }
+
     /*
     public void DrawScreen(RoomData data, MinerWilly minerWilly, IList<Mob> mobs, string playerScore)
     {
