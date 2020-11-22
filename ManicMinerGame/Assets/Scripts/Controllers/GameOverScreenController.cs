@@ -1,4 +1,4 @@
-﻿using System;
+﻿//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -55,7 +55,31 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
 
         roomRenderer.Init(renderers);
 
+        StartCoroutine(DropTheBoot(boot));
         StartCoroutine(DrawTheScreen(roomRenderer));
+    }
+
+    private IEnumerator DropTheBoot(StaticObject boot)
+    {
+        //throw new NotImplementedException();
+
+        while(isRunning)
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            boot.RowOffset += 2;
+            if(boot.RowOffset >= 8)
+            {
+                boot.RowOffset = 0;
+                boot.Y++;
+            }
+
+            if(boot.Y==12)
+            {
+                isRunning = false;
+                yield break;
+            }
+        }
     }
 
     IEnumerator DrawTheScreen(RoomRenderer roomRenderer)

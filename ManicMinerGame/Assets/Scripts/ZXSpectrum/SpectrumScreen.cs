@@ -116,7 +116,7 @@ namespace Com.SloanKelly.ZXSpectrum
             x *= 8;
             y *= 8;
 
-            y += rowOffset;
+            y -= rowOffset;
 
             _pixels.SetPP(x, y, row, val);
         }
