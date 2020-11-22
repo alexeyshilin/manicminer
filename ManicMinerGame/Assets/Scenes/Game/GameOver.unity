@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 392233417}
   - component: {fileID: 392233418}
   m_Layer: 0
-  m_Name: Room Loader Test
+  m_Name: GameOverScreenController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -304,11 +304,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 392233412}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6709a1b900c4716409e0c4149648f374, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c4bdbf0365a5134f9743027b288a324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 364493326}
-  roomId: 0
 --- !u!1 &688407286
 GameObject:
   m_ObjectHideFlags: 0
