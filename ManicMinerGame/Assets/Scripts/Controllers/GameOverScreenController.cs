@@ -8,7 +8,14 @@ using UnityEngine;
 [RequireComponent(typeof(RoomStore))]
 public class GameOverScreenController : MonoBehaviour, IScoreInformation
 {
-    private bool isRunning = true;
+    enum GameOverState
+    {
+        BootDrop,
+        GameOver
+    }
+
+    //private bool isRunning = true;
+    private GameOverState gameOverState = GameOverState.BootDrop;
     private StaticObject boot;
     private StaticObject plynth;
 
@@ -69,7 +76,7 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
 
         int paper = 1;
 
-        while (isRunning)
+        while (gameOverState == GameOverState.BootDrop)
         {
             yield return new WaitForSeconds(0.01f);
             roomRenderer.FloodFill(paper);
@@ -84,7 +91,7 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
     {
         //throw new NotImplementedException();
 
-        while(isRunning)
+        while(true)
         {
             yield return new WaitForSeconds(0.01f);
 
@@ -97,7 +104,7 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
 
             if(boot.Y==12)
             {
-                isRunning = false;
+                gameOverState = GameOverState.GameOver;
                 yield break;
             }
         }
@@ -107,7 +114,7 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
     {
         //throw new NotImplementedException();
 
-        while (isRunning)
+        while (true)
         {
             roomRenderer.DrawScreen();
             yield return null;
