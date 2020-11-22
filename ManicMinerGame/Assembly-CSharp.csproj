@@ -91,10 +91,12 @@
     <Compile Include="Assets\Scripts\Room\Renderers\PlayerScoreRenderer.cs" />
     <Compile Include="Assets\Scripts\Room\Renderers\PortalRenderer.cs" />
     <Compile Include="Assets\Scripts\Room\Renderers\RoomNameRenderer.cs" />
+    <Compile Include="Assets\Scripts\Room\Renderers\StaticObjectRenderer.cs" />
     <Compile Include="Assets\Scripts\Room\RoomData.cs" />
     <Compile Include="Assets\Scripts\Room\RoomKey.cs" />
     <Compile Include="Assets\Scripts\Room\RoomRenderer.cs" />
     <Compile Include="Assets\Scripts\Room\RoomStore.cs" />
+    <Compile Include="Assets\Scripts\Room\StaticObject.cs" />
     <Compile Include="Assets\Scripts\UI\Debug\DebugDemoGame.cs" />
     <Compile Include="Assets\Scripts\UI\Debug\DebugStartTheGame.cs" />
     <Compile Include="Assets\Scripts\ZXSpectrum\BoolArrayExtensions.cs" />

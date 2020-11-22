@@ -8,6 +8,7 @@ using UnityEngine;
 public class GameOverScreenController : MonoBehaviour, IScoreInformation
 {
     private bool isRunning = true;
+    private StaticObject boot;
 
     //public int Score => throw new NotImplementedException();
     public int Score
@@ -33,6 +34,8 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
             yield return null;
         }
 
+        boot = new StaticObject(store.Rooms[2].SpecialGraphics[0]);
+
         var roomData = store.Rooms[0]; // TODO: game over room
 
         Mob minerWilly = new Mob(store.MinerWillySprites, 15, 12, 4, 0, 0, 7);
@@ -40,6 +43,7 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
         var renderers = new List<IRenderer>();
 
         renderers.Add(new MinerWillyRenderer(minerWilly, store.Rooms[roomId]));
+        renderers.Add(new StaticObjectRenderer(boot));
         renderers.Add(new AirSupplyRenderer(roomData));
         renderers.Add(new RoomNameRenderer(roomData));
         renderers.Add(new PlayerScoreRenderer(this));
