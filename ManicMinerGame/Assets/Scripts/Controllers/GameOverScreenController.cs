@@ -9,6 +9,7 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
 {
     private bool isRunning = true;
     private StaticObject boot;
+    private StaticObject plynth;
 
     //public int Score => throw new NotImplementedException();
     public int Score
@@ -35,6 +36,7 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
         }
 
         boot = new StaticObject(store.Rooms[2].SpecialGraphics[0]);
+        plynth = new StaticObject(store.Rooms[1].SpecialGraphics[0], 15, 14);
 
         var roomData = store.Rooms[0]; // TODO: game over room
 
@@ -44,6 +46,7 @@ public class GameOverScreenController : MonoBehaviour, IScoreInformation
 
         renderers.Add(new MinerWillyRenderer(minerWilly, store.Rooms[roomId]));
         renderers.Add(new StaticObjectRenderer(boot));
+        renderers.Add(new StaticObjectRenderer(plynth));
         renderers.Add(new AirSupplyRenderer(roomData));
         renderers.Add(new RoomNameRenderer(roomData));
         renderers.Add(new PlayerScoreRenderer(this));
