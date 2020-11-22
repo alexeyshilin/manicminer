@@ -106,6 +106,21 @@ namespace Com.SloanKelly.ZXSpectrum
 			_pixels.Set (x, y, row, val);
 		}
 
+        public void PokePP(int x, int y, int row, int rowOffset, byte val)
+        {
+            if (_origin == Origin.Top)
+            {
+                y = 23 - y;
+            }
+
+            x *= 8;
+            y *= 8;
+
+            y += rowOffset;
+
+            _pixels.SetPP(x, y, row, val);
+        }
+
         /// <summary>
         /// Fill the attributes at a given position.
         /// </summary>
@@ -226,6 +241,11 @@ namespace Com.SloanKelly.ZXSpectrum
 
         }
 
+        public void DrawSpritePP(int x, int y, int cols, int rows, int rowOffset, params byte[] data)
+        {
+            DrawRowOrderSpritePP(x, y, cols, rows, rowOffset, data);
+        }
+
         private void DrawColumnOrderSprite(int x, int y, int cols, int rows, byte[] data)
         {
             int offset = 0;
@@ -259,6 +279,23 @@ namespace Com.SloanKelly.ZXSpectrum
                     for (int xx = x; xx < x + cols; xx++)
                     {
                         Poke(xx, yy, row, data[index]);
+                        index++;
+                    }
+                }
+            }
+        }
+
+        private void DrawRowOrderSpritePP(int x, int y, int cols, int rows, int rowOffset, byte[] data)
+        {
+            int index = 0;
+
+            for (int yy = y; yy < y + rows; yy++)
+            {
+                for (int row = 0; row < 8; row++)
+                {
+                    for (int xx = x; xx < x + cols; xx++)
+                    {
+                        PokePP(xx, yy, row, rowOffset, data[index]);
                         index++;
                     }
                 }

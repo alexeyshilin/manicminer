@@ -22,7 +22,7 @@ public class StaticObjectRenderer : IRenderer
         //throw new NotImplementedException();
 
         _screen.RowOrderSprite();
-        _screen.DrawSprite(_so.X, _so.Y, 2, 2, _so.Shape);
+        _screen.DrawSpritePP(_so.X, _so.Y, 2, 2, _so.RowOffset, _so.Shape);
     }
 
     public void Init(SpectrumScreen screen)
